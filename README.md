@@ -1,3 +1,8 @@
+To run this project, you will have to specify the following information in a .env file at the root level:
+HOST=<ip address of the MySQL host>
+USER=<user for logging into DB>
+PASSWORD=<USER's password>
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
