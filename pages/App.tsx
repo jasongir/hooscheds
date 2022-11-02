@@ -2,12 +2,12 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 // import router from "./router"
 
-import LogIn from "./pages/login";
-import SignUp from "./pages/signup";
+import LogIn from "./login";
+import SignUp from "./signup";
 import { Container } from "react-bootstrap";
-import CourseSearch from "./pages/courseSearch";
-import User from "./pages/user";
-import Home from "./pages/home";
+import CourseSearch from "./courseSearch";
+import User from "./user";
+import Home from "./home";
 
 type SignUpProps ={
 	email : string;
