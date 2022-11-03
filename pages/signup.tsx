@@ -57,11 +57,11 @@ export default function SignUp() {
         else if (student_id.indexOf('@') === -1){
             alert("please enter a valid email address with '@'" )
         }
-        else if (mode === "SIGNUP" && password === confirmPassword && student_id && password && confirmPassword) {
+        else if (mode === "SIGNUP" && password === confirmPassword && student_id && password && confirmPassword && first_name && last_name && year && primary_major) {
             //console.log(student_id.substring(0,student_id.indexOf("@")))
 			postMutation.mutate({ student_id, password, first_name, last_name, year, num_friends, primary_major });
             router.push("/home")
-		} 
+		}
 	};
 
 return (
@@ -97,6 +97,56 @@ return (
                 onChange={(e) => setConfirmPassword(e.target.value)}
             />
         </label>
+        <HtmlInput
+            name="first_name"
+            label="First Name:"
+            type ="text"
+            value={formState.first_name}
+            onChange={(e: React.FormEvent) =>
+                setFormState({
+                    ...formState,
+                    first_name: (e.target as HTMLInputElement).value,
+                })
+            }
+        />
+        <HtmlInput
+            name="last_name"
+            label="Last Name:"
+            type ="text"
+            value={formState.last_name}
+            onChange={(e: React.FormEvent) =>
+                setFormState({
+                    ...formState,
+                    last_name:(e.target as HTMLInputElement).value,
+                })
+            }
+        />
+        <HtmlInput
+            name="year"
+            label="Year:"
+            type ="number"
+            // min={1}
+			// max={5}
+            value={formState.year}
+            onChange={(e: React.FormEvent) =>
+                setFormState({
+                    ...formState,
+                    year: Number((e.target as HTMLInputElement).value),
+                })
+            }
+        />
+        <HtmlInput
+            name="primary_major"
+            label="Primary Major:"
+            type ="text"
+            value={formState.primary_major}
+            onChange={(e: React.FormEvent) =>
+                setFormState({
+                    ...formState,
+                    primary_major: (e.target as HTMLInputElement).value,
+                })
+            }
+        />                
         <button>{mode}</button>
         {/* <div className="form-group">
             <a href="http://localhost:3000/login" target="_blank">

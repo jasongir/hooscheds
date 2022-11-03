@@ -18,10 +18,18 @@ export interface PostResponse {
 export async function postStudent({
 	student_id,
 	password,
+	first_name,
+    last_name,
+    year,
+    primary_major
 }: Student): Promise<PostResponse> {
 	const { data } = await axios.post("/api/signup", {
 		student_id,
 		password,
+		first_name,
+    	last_name,
+    	year,
+    	primary_major
 	});
 	return data as PostResponse;
 }
