@@ -35,7 +35,7 @@ export default async function handler(
 				console.log("ERROR");
 				return res.status(400).json({ success: false });
 			}
-            
+
 		}
     }
 }

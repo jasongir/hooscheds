@@ -41,12 +41,8 @@ export default function SignUp() {
     const onSubmitHandler = (e: React.SyntheticEvent) => {
 		e.preventDefault();
 		const { student_id, password, first_name, last_name, year, num_friends, primary_major } = formState;
-		if (mode === "SIGNUP" && password === confirmPassword && student_id && password && confirmPassword) {
-            //console.log(student_id.substring(0,student_id.indexOf("@")))
-			postMutation.mutate({ student_id, password, first_name, last_name, year, num_friends, primary_major });
-            router.push("/home")
-		} 
-        else if (!student_id){
+		
+        if (!student_id){
             alert("please enter your email")
         }
         else if (!password){
@@ -55,9 +51,17 @@ export default function SignUp() {
         else if (!confirmPassword){
             alert("please re-enter your password")
         }
-        else if (password !== confirmPassword) {
+        else if (password !== confirmPassword){
             alert("your passwords do not match")
         }
+        else if (student_id.indexOf('@') === -1){
+            alert("please enter a valid email address with '@'" )
+        }
+        else if (mode === "SIGNUP" && password === confirmPassword && student_id && password && confirmPassword) {
+            //console.log(student_id.substring(0,student_id.indexOf("@")))
+			postMutation.mutate({ student_id, password, first_name, last_name, year, num_friends, primary_major });
+            router.push("/home")
+		} 
 	};
 
 return (
