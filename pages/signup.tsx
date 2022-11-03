@@ -17,8 +17,10 @@ import HtmlInput from "../components/HtmlInput";
 
 
 export default function SignUp() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
+    const router = useRouter()
+
     const [confirmPassword, setConfirmPassword] = useState("");
     const [formState, setFormState] = useState<Student>({
 		student_id: "",
