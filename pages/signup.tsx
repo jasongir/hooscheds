@@ -4,6 +4,8 @@ import {useState, useEffect} from "react";
 import {useNavigate, Routes, Route} from "react-router-dom";
 import { Button } from 'react-bootstrap';
 
+
+
 export default function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -52,5 +54,3 @@ return (
 )
 
 }
-
-
