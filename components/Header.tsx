@@ -19,7 +19,7 @@ export default function Header() {
           <Nav.Link href="/schedule">My Schedule</Nav.Link>
           <Nav.Link href="/friends/jag8thv">My Friends</Nav.Link>
           <Nav.Link href="/courses">Courses</Nav.Link>
-          <Nav.Link href="/login">Logout</Nav.Link>
+          <Nav.Link href="/logout">Logout</Nav.Link>
         </Nav>
       </Container>
     </Navbar>
