@@ -11,20 +11,16 @@ export default function Friends() {
   const sidRes = z.string().safeParse(sid);
   if (!sidRes.success) return <p>ERROR: incorrectly formatted ComputingID</p>;
 
-  const { data, error } = useQuery(["Friends"], () =>
-    getFriends(sidRes.data)
-  );
+  const { data, error } = useQuery(["Friends"], () => getFriends(sidRes.data));
 
   console.log("data", data, error);
   return (
     <>
-      <section className="heading">
-        <h1>Hooscheds</h1>
-        <p>Your Friends</p>
-      </section>
+      <div className="p-3 text-center bg-light">
+        <h1 className="mb-3">{sid}'s Friends</h1>
+      </div>
       <main>
         <div className="main-container">
-          <div>Student Id</div>
           {/* <div>First Name</div>
 					<div>Last Name</div> */}
           <div></div>
