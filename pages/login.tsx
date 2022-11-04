@@ -12,42 +12,33 @@ export default function LogIn() {
     password: "",
   });
   const queryClient = useQueryClient();
-  
+
   const loginMutation = useMutation(postStudentLogIn, {
-    cacheTime: 3.6e+6,
+    cacheTime: 3.6e6,
     onSuccess: (data) => {
       console.log(data);
-      localStorage.setItem('token', data.token);
-      queryClient.invalidateQueries(['auth']);
-      alert("Logged in sucessfully as "+data.student['first_name'])
-  },
-    onError: (err) => (console.log(err))
-  } )
+      localStorage.setItem("token", data.token);
+      queryClient.invalidateQueries(["auth"]);
+      alert("Logged in sucessfully as " + data.student["first_name"]);
+    },
+    onError: (err) => console.log(err),
+  });
 
   const mode = "LOGIN";
 
   const onSubmitHandler = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const { 
-        student_id, 
-        password 
-    } = formState;
+    const { student_id, password } = formState;
 
-        if (!student_id) {
-          alert("please enter your email");
-        } else if (!password) {
-          alert("please enter your password");ß
-        } else if (
-          mode === "LOGIN" &&
-          student_id &&
-          password
-        ) {
-          loginMutation.mutate(
-            {student_id, password}
-            )
-          
-          router.push("/home");
-        }
+    if (!student_id) {
+      alert("please enter your email");
+    } else if (!password) {
+      alert("please enter your password");
+    } else if (mode === "LOGIN" && student_id && password) {
+      loginMutation.mutate({ student_id, password });
+
+      router.push("/home");
+    }
   };
 
   return (
@@ -67,7 +58,7 @@ export default function LogIn() {
       <HtmlInput
         name="password"
         label="Password:"
-        type="text"
+        type="password"
         value={formState.password}
         onChange={(e: React.FormEvent) =>
           setFormState({
