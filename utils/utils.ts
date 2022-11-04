@@ -15,6 +15,7 @@ export interface PostResponse {
   success: boolean;
 }
 
+//signup
 export async function postStudent({
   student_id,
   password,
@@ -35,22 +36,13 @@ export async function postStudent({
 }
 
 //login
-// export interface StudentLogIn {
-//   student_id: string;
-//   password: string;
-// }
-
-// export interface PostResponse {
-//   success: boolean;
-// }
-
-// export async function postStudentLogIn({
-//   student_id,
-//   password
-// }: Student): Promise<PostResponse> {
-//   const { data } = await axios.post("/api/login", {
-//     student_id,
-//     password,
-//   });
-//   return data as PostResponse;
-// }
+export async function postStudentLogIn({
+  student_id,
+  password
+}: Student): Promise<PostResponse> {
+  const { data } = await axios.post("/api/login", {
+    student_id,
+    password,
+  });
+  return data as PostResponse;
+}

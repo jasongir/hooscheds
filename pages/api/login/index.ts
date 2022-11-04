@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { executeQuery } from "../../../backend-utils/db";
 
+
 // TODO: Send JWT token with username from DB
 
 export default async function handler(
