@@ -44,25 +44,17 @@ export async function postStudent({
     first_name,
     last_name,
     year,
-    primary_major
-}: Student): Promise<PostResponse> {
-	const { data } = await axios.post("/api/signup", {
-		student_id,
-		password,
-		first_name,
-    	last_name,
-    	year,
-    	primary_major
-	});
-	return data as PostResponse;
+    primary_major,
+  });
+  return data as PostResponse;
 }
 
 export async function getFriends(student_id: string): Promise<Student[]> {
-	console.log("Hi")
-	let sid = student_id
-	console.log(sid)
-	const { data } = await axios.get("/api/friends/" + sid);
-	return data as Student[];
+  console.log("Hi");
+  let sid = student_id;
+  console.log(sid);
+  const { data } = await axios.get("/api/friends/" + sid);
+  return data as Student[];
 }
 
 export interface LoginResponse {
@@ -72,12 +64,12 @@ export interface LoginResponse {
 
 export async function postStudentLogIn({
   student_id,
-  password
+  password,
 }: StudentLogin): Promise<LoginResponse> {
   const { data } = await axios.post("/api/login", {
     student_id,
     password,
   });
-  console.log(data)
+  console.log(data);
   return data as LoginResponse;
 }
