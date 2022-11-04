@@ -1,3 +1,5 @@
+import Table from "react-bootstrap/Table";
+
 interface FriendProps {
   student_id: string;
 }
@@ -5,7 +7,14 @@ interface FriendProps {
 const FriendTable: React.FC<FriendProps> = ({ student_id }) => {
   return (
     <>
-      <div>{student_id}</div>
+      <Table striped bordered hover>
+        <tbody>
+          <tr>
+            <th>{student_id}</th>
+          </tr>
+        </tbody>
+      </Table>
+      {/* <div>{student_id}</div> */}
       {/* <button>
 				Go to {student_id}'s page
 			</button> */}
