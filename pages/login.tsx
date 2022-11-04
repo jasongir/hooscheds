@@ -1,50 +1,82 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
+import { useRouter } from "next/router";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { StudentLogin, postStudentLogIn } from "../utils/utils";
+import HtmlInput from "../components/HtmlInput";
 
 export default function LogIn() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  // let navigate = useNavigate();
+  const router = useRouter();
+  const [formState, setFormState] = useState<StudentLogin>({
+    student_id: "",
+    password: "",
+  });
+  const queryClient = useQueryClient();
+  
+  const loginMutation = useMutation(postStudentLogIn, {
+    cacheTime: 3.6e+6,
+    onSuccess: (data) => {
+      console.log(data);
+      localStorage.setItem('token', data.token);
+      queryClient.invalidateQueries(['auth']);
+      alert("Logged in sucessfully as "+data.student['first_name'])
+  },
+    onError: (err) => (console.log(err))
+  } )
 
-  // useEffect(()=>{
-  //     navigate("/");
-  // });
+  const mode = "LOGIN";
 
-  // const handleSubmit = (event) => {
-  //     event.preventDefault();
-  // }
+  const onSubmitHandler = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    const { 
+        student_id, 
+        password 
+    } = formState;
+
+        if (!student_id) {
+          alert("please enter your email");
+        } else if (!password) {
+          alert("please enter your password");ß
+        } else if (
+          mode === "LOGIN" &&
+          student_id &&
+          password
+        ) {
+          loginMutation.mutate(
+            {student_id, password}
+            )
+          
+          router.push("/home");
+        }
+  };
 
   return (
-    <form>
-      <a href="http://localhost:3000/signup" target="_blank">
-        <Button> Go Back </Button>
-      </a>
-
-      <label>
-        {" "}
-        Email:
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </label>
-
-      <label>
-        Password:
-        <input
-          type="text"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </label>
-
-      <div className="form-group">
-        <a href="http://localhost:3000/signup" target="_blank">
-          <Button> Haven't Registered? Go to Signup Page </Button>
-        </a>
-      </div>
+    <form onSubmit={onSubmitHandler}>
+      <HtmlInput
+        name="student_id"
+        label="Username:"
+        type="text"
+        value={formState.student_id}
+        onChange={(e: React.FormEvent) =>
+          setFormState({
+            ...formState,
+            student_id: (e.target as HTMLInputElement).value,
+          })
+        }
+      />
+      <HtmlInput
+        name="password"
+        label="Password:"
+        type="text"
+        value={formState.password}
+        onChange={(e: React.FormEvent) =>
+          setFormState({
+            ...formState,
+            password: (e.target as HTMLInputElement).value,
+          })
+        }
+      />
+      <button>LOGIN</button>
     </form>
   );
 }
