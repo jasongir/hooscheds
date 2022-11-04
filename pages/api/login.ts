@@ -33,7 +33,7 @@ export default async function handler(
 				const data = await executeQuery(
 					`SELECT student_id, first_name, last_name, year, num_friends, primary_major FROM 
             Student WHERE student_id=? AND password=?`,
-					[result.data.student_id.substring(0, result.data.student_id.indexOf("@")), result.data.password],
+					[result.data.student_id.substring(0, result.data.student_id.indexOf("@")??-1), result.data.password],
 					"Failed to find user"
 				);
 				console.log(data)

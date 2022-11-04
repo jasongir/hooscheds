@@ -12,6 +12,15 @@ export interface Student {
   primary_major: string;
 }
 
+export interface LoggedInStudent {
+  student_id: string;
+  first_name: string;
+  last_name: string;
+  year: number;
+  num_friends: number;
+  primary_major: string;
+}
+
 export interface StudentLogin {
   student_id: string;
   password: string;
@@ -42,6 +51,7 @@ export async function postStudent({
 
 export interface LoginResponse {
   token: string;
+  student: LoggedInStudent;
 }
 
 export async function postStudentLogIn({
