@@ -2,20 +2,22 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { StudentLogIn, postStudentLogIn } from "../utils/utils";
+import { StudentLogin, postStudentLogIn } from "../utils/utils";
 import HtmlInput from "../components/HtmlInput";
 
 export default function LogIn() {
   const router = useRouter();
-  //   const [confirmPassword, setConfirmPassword] = useState("");
-  const [formState, setFormState] = useState<StudentLogIn>({
+  const [formState, setFormState] = useState<StudentLogin>({
     student_id: "",
     password: "",
   });
   const queryClient = useQueryClient();
-  const postMutation = useMutation(postStudentLogIn, {
-    onSettled: () => queryClient.invalidateQueries(["student"]),
-  });
+  const loginMutation = useMutation(postStudentLogIn, {
+    cacheTime: 3.6e+6,
+    onSuccess: (data) => {console.log(data), 
+    localStorage.setItem('token', data.token)},
+    onError: (err) => (console.log(err))
+  } )
 
   const mode = "LOGIN";
 
@@ -26,22 +28,21 @@ export default function LogIn() {
         password 
     } = formState;
 
-    //     if (!student_id) {
-    //       alert("please enter your email");
-    //     } else if (!password) {
-    //       alert("please enter your password");ß
-    //     } else if (
-    //       mode === "LOGIN" &&
-    //       student_id &&
-    //       password
-    //     ) {
-    //       //console.log(student_id.substring(0,student_id.indexOf("@")))
-    //       postMutation.mutate({
-    //         student_id,
-    //         password
-    //       });
+        if (!student_id) {
+          alert("please enter your email");
+        } else if (!password) {
+          alert("please enter your password");ß
+        } else if (
+          mode === "LOGIN" &&
+          student_id &&
+          password
+        ) {
+          loginMutation.mutate(
+            {student_id, password}
+            )
+          
           router.push("/home");
-    //     }
+        }
   };
 
   return (

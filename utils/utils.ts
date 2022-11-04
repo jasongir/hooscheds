@@ -12,6 +12,11 @@ export interface Student {
   primary_major: string;
 }
 
+export interface StudentLogin {
+  student_id: string;
+  password: string;
+}
+
 export interface PostResponse {
   success: boolean;
 }
@@ -35,22 +40,18 @@ export async function postStudent({
   return data as PostResponse;
 }
 
-//login
-export interface StudentLogIn {
-  student_id: string;
-  password: string;
+export interface LoginResponse {
+  token: string;
 }
 
-export interface PostResponse {
-  success: boolean;
-}
 export async function postStudentLogIn({
   student_id,
   password
-}: Student): Promise<PostResponse> {
+}: StudentLogin): Promise<LoginResponse> {
   const { data } = await axios.post("/api/login", {
     student_id,
     password,
   });
-  return data as PostResponse;
+  console.log(data)
+  return data as LoginResponse;
 }
