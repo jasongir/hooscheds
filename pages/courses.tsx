@@ -1,11 +1,9 @@
-export default function Home() {
+export default function Courses() {
   return (
     <>
       <div className="p-3 text-center bg-light">
-        <h1 className="mb-3">Welcome to Hooscheds</h1>
-        <h5 className="mb-3">Course Search</h5>
+        <h1 className="mb-3">Courses</h1>
       </div>
-
       <div className="input-group">
         <div className="form-outline">
           <input type="search" id="form1" className="form-control" />
