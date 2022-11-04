@@ -33,3 +33,11 @@ export async function postStudent({
 	});
 	return data as PostResponse;
 }
+
+export async function getFriends(student_id: string): Promise<Student[]> {
+	console.log("Hi")
+	let sid = student_id
+	console.log(sid)
+	const { data } = await axios.get("/api/friends/" + sid);
+	return data as Student[];
+}
