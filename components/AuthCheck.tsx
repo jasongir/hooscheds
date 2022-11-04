@@ -9,7 +9,7 @@ export default function AuthCheck({ Component, pageProps }: AppProps) {
 	const { data, isLoading, error } = useQuery({
 		queryKey: ["auth"],
 		queryFn: () => ({
-			loggedIn: false,
+			loggedIn: true,
 		}),
 	});
 	if (isLoading || error) return <Spinner animation="border" role="status" />;
