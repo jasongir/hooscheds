@@ -1,22 +1,27 @@
 import Link from "next/link";
+import { Container, Nav, Navbar, Row } from "react-bootstrap";
 
-function HeaderLink({ href, title }: { href: string; title: string }) {
-	return (
-		<li>
-			<Link href="/">HOME</Link>
-		</li>
-	);
-}
+const NavItem = ({ href, text }: { href: string; text: string }) => (
+	<Nav.Item>
+		<Navbar.Text>
+			<Link href={href}>{text}</Link>
+		</Navbar.Text>
+	</Nav.Item>
+);
 
 export default function Header() {
-	<ul>
-		<HeaderLink href="/" title="HOME" />
-		<HeaderLink href="/" title="My Profile" />
-		<HeaderLink href="/" title="My Schedule" />
-		<HeaderLink href="/" title="Courses" />
-		<HeaderLink href="/" title="Courses" />
-		<HeaderLink href="/" title="My Friends" />
-
-		<HeaderLink href="/" title="Logout" />
-	</ul>;
+	return (
+		<Navbar expand="md">
+			<Container>
+				<Navbar.Brand>
+					<Link href="/">HOME</Link>
+				</Navbar.Brand>
+				<NavItem href="/profile" text="My Profile" />
+				<NavItem href="/schedule" text="My Schedule" />
+				<NavItem href="/courses" text="Courses" />
+				<NavItem href="/friends" text="My Friends" />
+				<NavItem href="/logout" text="Logout" />
+			</Container>
+		</Navbar>
+	);
 }
