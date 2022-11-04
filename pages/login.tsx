@@ -5,13 +5,25 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { StudentLogin, postStudentLogIn } from "../utils/utils";
 import HtmlInput from "../components/HtmlInput";
 
+
 export default function LogIn() {
-	const router = useRouter();
-	const [formState, setFormState] = useState<StudentLogin>({
-		student_id: "",
-		password: "",
-	});
-	const queryClient = useQueryClient();
+  const router = useRouter();
+  const [formState, setFormState] = useState<StudentLogin>({
+    student_id: "",
+    password: "",
+  });
+  const queryClient = useQueryClient();
+
+  const loginMutation = useMutation(postStudentLogIn, {
+    cacheTime: 3.6e6,
+    onSuccess: (data) => {
+      console.log(data);
+      localStorage.setItem("token", data.token);
+      queryClient.invalidateQueries(["auth"]);
+      alert("Logged in sucessfully as " + data.student["first_name"]);
+    },
+    onError: (err) => console.log(err),
+  });
 
 	const loginMutation = useMutation(postStudentLogIn, {
 		cacheTime: 3.6e6,
