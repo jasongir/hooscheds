@@ -15,10 +15,11 @@ export default function LogIn() {
   
   const loginMutation = useMutation(postStudentLogIn, {
     cacheTime: 3.6e+6,
-    onSuccess: (data) => {console.log(data), 
-    localStorage.setItem('token', data.token)
-    queryClient.invalidateQueries(['auth']),
-    alert("Logged in sucessfully as "+data.student['first_name'])
+    onSuccess: (data) => {
+      console.log(data);
+      localStorage.setItem('token', data.token);
+      queryClient.invalidateQueries(['auth']);
+      alert("Logged in sucessfully as "+data.student['first_name'])
   },
     onError: (err) => (console.log(err))
   } )

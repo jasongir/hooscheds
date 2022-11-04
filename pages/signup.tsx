@@ -23,6 +23,8 @@ export default function SignUp() {
 	const queryClient = useQueryClient();
 	const postMutation = useMutation(postStudent, {
 		onSettled: () => queryClient.invalidateQueries(["student"]),
+		onSuccess: (data) => {alert("Signed up sucessfully as "+
+		formState['first_name'])}
 	});
 
 	const onSubmitHandler = (e: React.SyntheticEvent) => {
@@ -57,6 +59,7 @@ export default function SignUp() {
 			year &&
 			primary_major
 		) {
+			
 			postMutation.mutate({
 				student_id,
 				password,
