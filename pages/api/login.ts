@@ -9,10 +9,9 @@ export default async function handler(
 	res: NextApiResponse
 ) {
     if (req.method === "POST") {
-		console.log(req)
         const reqData = {
 			student_id: req.body.student_id,
-			password: req.body.password,
+			password: req.body.password
 		};
 		const RequestStudent = z.object({
 			student_id: z.string().max(100),
@@ -43,9 +42,10 @@ export default async function handler(
                         {data: data[0].student_id,
                         exp: Math.floor(Date.now() / 1000) + (60 * 60)},
                         result.data.password)
-				return res.status(200).json({ token: token, student: data});
+				return res.status(200).json({ token: token, student: data[0]});
 			} catch (error) {
-				return res.status(400).json({ success: false, error: error });
+				console.log(error)
+				return res.status(400).json({ success: false });
 			}
             
 		}

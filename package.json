@@ -23,6 +23,7 @@
 		"zod": "^3.19.1"
 	},
 	"devDependencies": {
+		"@types/jsonwebtoken": "^8.5.9",
 		"@types/mysql": "^2.15.21",
 		"@types/node": "18.11.8",
 		"@types/react": "18.0.24",
