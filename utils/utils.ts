@@ -1,6 +1,7 @@
 import axios from "axios";
 import internal from "stream";
 
+//signup
 export interface Student {
   student_id: string;
   password: string;
@@ -15,7 +16,6 @@ export interface PostResponse {
   success: boolean;
 }
 
-//signup
 export async function postStudent({
   student_id,
   password,
@@ -36,6 +36,14 @@ export async function postStudent({
 }
 
 //login
+export interface StudentLogIn {
+  student_id: string;
+  password: string;
+}
+
+export interface PostResponse {
+  success: boolean;
+}
 export async function postStudentLogIn({
   student_id,
   password
