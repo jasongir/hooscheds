@@ -26,6 +26,10 @@ export interface StudentLogin {
   password: string;
 }
 
+export interface FindFriend {
+  student_id: string;
+}
+
 export interface PostResponse {
   success: boolean;
 }
