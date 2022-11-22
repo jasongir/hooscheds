@@ -52,7 +52,7 @@ export default function LogIn() {
       <div className="app-container">
         <div className="col-md-6 offset-md-3 mt-5">
           <div className="card">
-            <div className="card-header">Sign Up </div>
+            <h4 className="card-header">Log In</h4>
             <div className="card-body">
               <HtmlInput
                 name="student_id"

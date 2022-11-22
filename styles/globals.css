@@ -112,6 +112,13 @@ a {
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+.text-center{
+  text-align: center!important;
+}
+
+.mt-4, my-4{
+  margin-top: 1.5rem!important;
+}
 
 @media (prefers-color-scheme: dark) {
   html {
