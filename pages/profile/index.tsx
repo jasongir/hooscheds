@@ -2,10 +2,13 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
 import { LoggedInStudent } from "../../utils/utils";
 import Schedule from "pages/schedule";
+import { useRouter } from "next/router";
 
 export default function Profile() {
 	const queryClient = useQueryClient();
 	const data = queryClient.getQueryData(["auth"]);
+	const router = useRouter();
+	if (!data) router.push("/login");
 
 	const studentYear = (user: LoggedInStudent) =>
 		user.year === 1
