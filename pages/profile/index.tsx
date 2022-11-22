@@ -1,20 +1,4 @@
 import { Col, Container, Row } from "react-bootstrap";
-<<<<<<< HEAD
-import React from "react";
-import { useRouter } from "next/router";
-
-export default function Profile() {
-  const router = useRouter();
-  // const { student_id: user} = router.query;
-  const user = {
-    student_id: "jag8thv",
-    first_name: "jason",
-    last_name: "giroux",
-    year: 3,
-    num_friends: 2,
-    primary_major: "CS",
-  };
-=======
 import { useQueryClient } from "@tanstack/react-query";
 import { LoggedInStudent } from "../../utils/utils";
 import { useRouter } from "next/router";
@@ -24,7 +8,6 @@ export default function Profile() {
 	const data = queryClient.getQueryData(["auth"]);
 	const router = useRouter();
 	if (!data) router.push("/login");
->>>>>>> main
 
 	const studentYear = (user: LoggedInStudent) =>
 		user.year === 1

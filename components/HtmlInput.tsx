@@ -48,6 +48,7 @@ const HtmlInput: React.FC<HtmlInputProps> = ({
             max={max}
             value={value}
             onChange={onChange}
+            className = "form-control"
           />
         ) : (
           <input type={type} name={name} value={value} onChange={onChange} />
