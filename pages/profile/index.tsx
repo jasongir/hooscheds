@@ -34,7 +34,7 @@ export default function Profile() {
 							<h3>{typedData.primary_major} Major</h3>
 						</Col>
 						<Col as="section">
-							<Schedule/>
+							<DisplaySchedule/>
 						</Col>
 					</Row>
 				</Container>

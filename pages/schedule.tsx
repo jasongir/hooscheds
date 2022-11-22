@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import FullCalendar from '@fullcalendar/react'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import { LoggedInStudent, getSchedules } from "utils/utils";
+import { LoggedInStudent, getSchedules, getTimings, Schedule } from "utils/utils";
 import { useQuery } from "@tanstack/react-query";
 
 /* TODO: 
@@ -12,14 +12,22 @@ import { useQuery } from "@tanstack/react-query";
           4. Convert the section information into a form displayable in a calendar
           5. Display the schedule on a calendar */
 
-export default function Schedule() {
+export default function DisplaySchedule() {
   const queryClient = useQueryClient();
   const student = queryClient.getQueryData(["auth"]) as LoggedInStudent
-  const { data, error } = useQuery(["Schedules"], () => getSchedules(student.student_id));
-  let first_schedule = undefined;
-  if (data) {
-    first_schedule = data[0]
 
+  const { data, error } = useQuery(["Schedules"], () => getSchedules(student.student_id));
+  let first_schedule: Schedule;
+  if (data) {
+    first_schedule = data[0] as Schedule
+    const { timings, error } = useQuery({
+      queryKey: ["Timings"], 
+      queryFn: () => getTimings(first_schedule.schedule_id), 
+      enabled: !!first_schedule}
+      );
+    if (timings){
+      console.log(timings)
+    }
   }
   
   return (
@@ -27,7 +35,7 @@ export default function Schedule() {
     <>
       <div className="p-3 text-center bg-light">
         <h1 className="mb-3">{student.first_name}'s Schedule</h1>
-        <h3>{data[0].name}</h3>
+        <h3>{data[0].name} {data[0].schedule_id}</h3>
         
                 <FullCalendar
           plugins={[interactionPlugin, timeGridPlugin]}

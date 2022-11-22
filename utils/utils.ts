@@ -39,6 +39,16 @@ export interface Schedule {
   num_likes: number;
 }
 
+export interface Timings {
+  course_id: string;
+  section_id: string;
+  start_time: string;
+  end_time: string;
+  meeting_dates: string;
+  location: string;
+  availability: string;
+}
+
 export async function postStudent({
   student_id,
   password,
@@ -61,6 +71,11 @@ export async function postStudent({
 export async function getSchedules(student_id: string): Promise<Schedule[]> {
   const { data } = await axios.get("/api/schedules/" + student_id);
   return data as Schedule[];
+}
+
+export async function getTimings(schedule_id: string): Promise<Timings[]> {
+  const { data } = await axios.get("/api/timings/" + schedule_id);
+  return data as Timings[];
 }
 
 export async function getFriends(student_id: string): Promise<Student[]> {
