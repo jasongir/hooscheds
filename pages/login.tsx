@@ -38,7 +38,7 @@ export default function LogIn() {
     } else if (mode === "LOGIN" && student_id && password) {
       loginMutation.mutate({ student_id, password });
 
-      router.push("/home");
+      router.push("/");
     }
   };
 

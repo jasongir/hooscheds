@@ -1,6 +1,10 @@
 import { Col, Container, Row } from "react-bootstrap";
+import React from "react";
+import { useRouter } from "next/router";
 
 export default function Profile() {
+  const router = useRouter();
+  // const { student_id: user} = router.query;
   const user = {
     student_id: "jag8thv",
     first_name: "jason",

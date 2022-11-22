@@ -4,8 +4,6 @@ import type { AppProps } from "next/app";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import AuthCheck from "../components/AuthCheck";
 
-
-
 export default function App(props: AppProps) {
 	const queryClient = new QueryClient();
 
