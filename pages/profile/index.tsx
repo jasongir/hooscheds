@@ -1,6 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
 import { LoggedInStudent } from "../../utils/utils";
+import Schedule from "pages/schedule";
 
 export default function Profile() {
 	const queryClient = useQueryClient();
@@ -31,6 +32,7 @@ export default function Profile() {
 						</Col>
 						<Col as="section">
 							<h1>{typedData.first_name}'s Schedule</h1>
+							<Schedule></Schedule>
 						</Col>
 					</Row>
 				</Container>

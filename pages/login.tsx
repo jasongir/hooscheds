@@ -14,17 +14,6 @@ export default function LogIn() {
   });
   const queryClient = useQueryClient();
 
-  const loginMutation = useMutation(postStudentLogIn, {
-    cacheTime: 3.6e6,
-    onSuccess: (data) => {
-      console.log(data);
-      localStorage.setItem("token", data.token);
-      queryClient.invalidateQueries(["auth"]);
-      alert("Logged in sucessfully as " + data.student["first_name"]);
-    },
-    onError: (err) => console.log(err),
-  });
-
 	const loginMutation = useMutation(postStudentLogIn, {
 		cacheTime: 3.6e6,
 		onSuccess: (data) => {
