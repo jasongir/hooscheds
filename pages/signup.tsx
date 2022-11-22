@@ -8,24 +8,25 @@ import HtmlInput from "../components/HtmlInput";
 export default function SignUp() {
   const router = useRouter();
 
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [formState, setFormState] = useState<Student>({
-    student_id: "",
-    password: "",
-    first_name: "",
-    last_name: "",
-    year: 1,
-    num_friends: 0,
-    primary_major: "",
-  });
-  const [errorMsg, setErrorMsg] = useState<string>("");
-  const queryClient = useQueryClient();
-  const postMutation = useMutation(postStudent, {
-    onSettled: () => queryClient.invalidateQueries(["student"]),
-    onSuccess: (data) => {
-      alert("Signed up sucessfully as " + formState["first_name"]);
-    },
-  });
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [formState, setFormState] = useState<Student>({
+		student_id: "",
+		password: "",
+		first_name: "",
+		last_name: "",
+		year: 1,
+		num_friends: 0,
+		primary_major: "",
+	});
+	const [errorMsg, setErrorMsg] = useState<string>("");
+	const queryClient = useQueryClient();
+	const postMutation = useMutation(postStudent, {
+		onSettled: () => queryClient.invalidateQueries(["student"]),
+		onSuccess: (data) => {
+			router.push("/login");
+			alert("Signed up sucessfully as " + formState["first_name"]);
+		},
+	});
 
   const onSubmitHandler = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -39,38 +40,38 @@ export default function SignUp() {
       primary_major,
     } = formState;
 
-    if (!student_id) {
-      setErrorMsg("please enter your email");
-    } else if (!password) {
-      setErrorMsg("please enter your password");
-    } else if (!confirmPassword) {
-      setErrorMsg("please re-enter your password");
-    } else if (password !== confirmPassword) {
-      setErrorMsg("your passwords do not match");
-    } else if (student_id.indexOf("@") === -1) {
-      setErrorMsg("please enter a valid email address with '@'");
-    } else if (
-      password === confirmPassword &&
-      student_id &&
-      password &&
-      confirmPassword &&
-      first_name &&
-      last_name &&
-      year &&
-      primary_major
-    ) {
-      postMutation.mutate({
-        student_id,
-        password,
-        first_name,
-        last_name,
-        year,
-        num_friends,
-        primary_major,
-      });
-      router.push("/");
-    }
-  };
+		if (!student_id) {
+			setErrorMsg("please enter your email");
+		} else if (!password) {
+			setErrorMsg("please enter your password");
+		} else if (!confirmPassword) {
+			setErrorMsg("please re-enter your password");
+		} else if (password !== confirmPassword) {
+			setErrorMsg("your passwords do not match");
+		} else if (student_id.indexOf("@") === -1) {
+			setErrorMsg("please enter a valid email address with '@'");
+		} else if (
+			password === confirmPassword &&
+			student_id &&
+			password &&
+			confirmPassword &&
+			first_name &&
+			last_name &&
+			year &&
+			primary_major
+		) {
+			postMutation.mutate({
+				student_id,
+				password,
+				first_name,
+				last_name,
+				year,
+				num_friends,
+				primary_major,
+			});
+			router.push("/home");
+		}
+	};
 
   return (
     <>
@@ -83,22 +84,10 @@ export default function SignUp() {
               <div className="card-body">
                 <form>
                   <div className="form-group">
-                    {/* <label>Email:</label> */}
-                    <HtmlInput
-                      name="student_id"
-                      label="Email:"
-                      type="text"
-                      value={formState.student_id}
-                      onChange={(e: React.FormEvent) =>
-                        setFormState({
-                          ...formState,
-                          student_id: (e.target as HTMLInputElement).value,
-                        })
-                      }
-                    />
+                    
                   </div>
                 </form>
-                {/* <HtmlInput
+                <HtmlInput
                   name="student_id"
                   label="Email:"
                   type="text"
@@ -109,7 +98,7 @@ export default function SignUp() {
                       student_id: (e.target as HTMLInputElement).value,
                     })
                   }
-                /> */}
+                />
                 <HtmlInput
                   name="password"
                   label="Password:"

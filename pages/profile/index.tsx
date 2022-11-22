@@ -1,4 +1,5 @@
 import { Col, Container, Row } from "react-bootstrap";
+<<<<<<< HEAD
 import React from "react";
 import { useRouter } from "next/router";
 
@@ -13,36 +14,49 @@ export default function Profile() {
     num_friends: 2,
     primary_major: "CS",
   };
+=======
+import { useQueryClient } from "@tanstack/react-query";
+import { LoggedInStudent } from "../../utils/utils";
+import { useRouter } from "next/router";
 
-  const studentYear =
-    user.year === 1
-      ? "1st"
-      : user.year === 2
-      ? "2nd"
-      : user.year === 3
-      ? "3rd"
-      : user.year === 4
-      ? "4th"
-      : "5th";
+export default function Profile() {
+	const queryClient = useQueryClient();
+	const data = queryClient.getQueryData(["auth"]);
+	const router = useRouter();
+	if (!data) router.push("/login");
+>>>>>>> main
 
-  return (
-    <>
-      <div className="p-3 text-center bg-light">
-        <h1 className="mb-3">My Profile</h1>
-      </div>
-      <Container fluid="md" as="main">
-        <Row>
-          <Col as="section">
-            <h2>{`${user.first_name} ${user.last_name}`}</h2>
-            <h3>{user.student_id}@virginia.edu</h3>
-            <h3>{studentYear} year</h3>
-            <h3>{user.primary_major} Major</h3>
-          </Col>
-          <Col as="section">
-            <h1>{user.first_name}'s Schedule</h1>
-          </Col>
-        </Row>
-      </Container>
-    </>
-  );
+	const studentYear = (user: LoggedInStudent) =>
+		user.year === 1
+			? "1st"
+			: user.year === 2
+			? "2nd"
+			: user.year === 3
+			? "3rd"
+			: user.year === 4
+			? "4th"
+			: "5th";
+
+	const typedData = data as LoggedInStudent;
+	return (
+		<>
+			{data ? (
+				<Container fluid="md" as="main">
+					<Row>
+						<Col as="section">
+							<h2>{`${typedData.first_name} ${typedData.last_name}`}</h2>
+							<h3>{typedData.student_id}@virginia.edu</h3>
+							<h3>{studentYear(typedData)} year</h3>
+							<h3>{typedData.primary_major} Major</h3>
+						</Col>
+						<Col as="section">
+							<h1>{typedData.first_name}'s Schedule</h1>
+						</Col>
+					</Row>
+				</Container>
+			) : (
+				<p>no</p>
+			)}
+		</>
+	);
 }
