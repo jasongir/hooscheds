@@ -15,7 +15,7 @@ export default function AuthCheck({ Component, pageProps }: AppProps) {
 		router.pathname === "/login" || router.pathname === "/signup";
 
 	useEffect(() => {
-		console.log(`in useeffect: ${data}`);
+		console.log(`in useeffect:`, data);
 		if (!data && !isLoginSignup) {
 			router.push("/login");
 		}
@@ -38,7 +38,7 @@ export default function AuthCheck({ Component, pageProps }: AppProps) {
 		return (
 			<>
 				<Header />
-				<Component {...pageProps} />;
+				<Component {...pageProps} />
 			</>
 		);
 	return <Spinner animation="border" role="status" />;
