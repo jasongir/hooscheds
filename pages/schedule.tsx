@@ -15,7 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 export default function DisplaySchedule() {
   const queryClient = useQueryClient();
   const student = queryClient.getQueryData(["auth"]) as LoggedInStudent
-
+  
   const { data, error } = useQuery(["Schedules"], () => getSchedules(student.student_id));
   let first_schedule: Schedule;
   if (data) {
