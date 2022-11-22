@@ -5,25 +5,14 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { StudentLogin, postStudentLogIn } from "../utils/utils";
 import HtmlInput from "../components/HtmlInput";
 
-
 export default function LogIn() {
-  const router = useRouter();
-  const [formState, setFormState] = useState<StudentLogin>({
-    student_id: "",
-    password: "",
-  });
-  const queryClient = useQueryClient();
-
-  const loginMutation = useMutation(postStudentLogIn, {
-    cacheTime: 3.6e6,
-    onSuccess: (data) => {
-      console.log(data);
-      localStorage.setItem("token", data.token);
-      queryClient.invalidateQueries(["auth"]);
-      alert("Logged in sucessfully as " + data.student["first_name"]);
-    },
-    onError: (err) => console.log(err),
-  });
+	const router = useRouter();
+	const [formState, setFormState] = useState<StudentLogin>({
+		student_id: "",
+		password: "",
+	});
+	const [errorMsg, setErrorMsg] = useState("");
+	const queryClient = useQueryClient();
 
 	const loginMutation = useMutation(postStudentLogIn, {
 		cacheTime: 3.6e6,
@@ -33,7 +22,7 @@ export default function LogIn() {
 			queryClient.setQueryData(["auth"], data.student);
 			// console.log(queryClient.getQueryData(["auth"]));
 			// queryClient.invalidateQueries(["auth"]);
-			alert("Logged in sucessfully as " + data.student["first_name"]);
+			// alert("Logged in sucessfully as " + data.student["first_name"]);
 		},
 		onError: (err) => console.log(err),
 	});
@@ -45,9 +34,11 @@ export default function LogIn() {
 		const { student_id, password } = formState;
 
 		if (!student_id) {
-			alert("please enter your email");
+			setErrorMsg("please enter your email");
+			// alert("please enter your email");
 		} else if (!password) {
-			alert("please enter your password");
+			setErrorMsg("please enter your password");
+			// alert("please enter your password");
 		} else if (mode === "LOGIN" && student_id && password) {
 			await loginMutation.mutateAsync({ student_id, password });
 			console.log(queryClient.getQueryData(["auth"]));
@@ -57,6 +48,7 @@ export default function LogIn() {
 
 	return (
 		<form onSubmit={onSubmitHandler}>
+			{errorMsg && <div>{errorMsg}</div>}
 			<HtmlInput
 				name="student_id"
 				label="Username:"
@@ -72,7 +64,7 @@ export default function LogIn() {
 			<HtmlInput
 				name="password"
 				label="Password:"
-				type="text"
+				type="password"
 				value={formState.password}
 				onChange={(e: React.FormEvent) =>
 					setFormState({
