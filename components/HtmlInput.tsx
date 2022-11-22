@@ -37,7 +37,7 @@ const HtmlInput: React.FC<HtmlInputProps> = ({
   onChange,
 }: HtmlInputProps) => (
   <>
-    <div>
+    <div className = "form-group">
       <label htmlFor={name}>
         {label}
         {min && max ? (
@@ -48,10 +48,9 @@ const HtmlInput: React.FC<HtmlInputProps> = ({
             max={max}
             value={value}
             onChange={onChange}
-            className = "form-control"
           />
         ) : (
-          <input type={type} name={name} value={value} onChange={onChange} />
+          <input type={type} name={name} value={value} onChange={onChange} className = "form-control" />
         )}
       </label>
     </div>

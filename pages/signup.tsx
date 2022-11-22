@@ -80,11 +80,12 @@ export default function SignUp() {
         <div className="app-container">
           <div className="col-md-6 offset-md-3 mt-5">
             <div className="card">
-              <div className="card-header">Sign Up </div>
+              <h4 className="card-header">Sign Up </h4>
               <div className="card-body">
                 {/* <form>
                   <div className="form-group">
-                    
+                    <label>Email :</label>
+                    <input name="student_id" type="text" className="form-control"></input>
                   </div>
                 </form> */}
                 <HtmlInput
@@ -111,14 +112,17 @@ export default function SignUp() {
                     })
                   }
                 />
+                <div className = "form-group">
                 <label>
                   Confirm Password:
                   <input
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
+                    className = "form-control"
                   />
                 </label>
+                </div>
                 <HtmlInput
                   name="first_name"
                   label="First Name:"
