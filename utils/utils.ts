@@ -30,6 +30,15 @@ export interface PostResponse {
   success: boolean;
 }
 
+export interface Schedule {
+  schedule_id: string;
+  student_id: string;
+  name: string;
+  sched_term: string;
+  privacy: string;
+  num_likes: number;
+}
+
 export async function postStudent({
   student_id,
   password,
@@ -47,6 +56,11 @@ export async function postStudent({
     primary_major,
   });
   return data as PostResponse;
+}
+
+export async function getSchedules(student_id: string): Promise<Schedule[]> {
+  const { data } = await axios.get("/api/schedules/" + student_id);
+  return data as Schedule[];
 }
 
 export async function getFriends(student_id: string): Promise<Student[]> {
