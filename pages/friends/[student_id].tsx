@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getFriends, FindFriend } from "../../utils/utils";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { getFriends, FindFriend, searchFriend } from "../../utils/utils";
 import FriendTable from "../../components/Table";
 import { useRouter } from "next/router";
 import { z } from "zod";
@@ -22,14 +22,34 @@ export default function Friends() {
 
   const [errorMsg, setErrorMsg] = useState("");
 
+  const searchMutation = useMutation(searchFriend, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (err) => console.log(err),
+  });
+
+  const mode = "SEARCH";
+
+  
   const onSubmitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const { student_id } = formState;
 
     if (!student_id) {
-      setErrorMsg("please enter your email");
+      setErrorMsg("please enter the student id");
       // alert("please enter your email");
-    }
+    } else if (mode === "SEARCH" && student_id) {
+			await searchMutation.mutateAsync({ student_id });
+
+      // work on error handling --> when user does not exist
+      const student_id_Res = z.string().safeParse(student_id);
+      if (!student_id_Res.success) {
+        return <p>ERROR: User does not exist</p>;
+      }
+
+			router.push(`/search/${encodeURIComponent(student_id)}`);
+		}
   };
 
   return (

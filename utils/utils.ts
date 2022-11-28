@@ -30,6 +30,20 @@ export interface FindFriend {
   student_id: string;
 }
 
+export interface SearchFriendResponse {
+  student: string;
+}
+
+export async function searchFriend({
+  student_id,
+}: FindFriend): Promise<SearchFriendResponse> {
+  const { data } = await axios.post("/api/searchFriend", {
+    student_id,
+  });
+  console.log("searchFriend working" , data);
+  return data as SearchFriendResponse;
+}
+
 export interface PostResponse {
   success: boolean;
 }
