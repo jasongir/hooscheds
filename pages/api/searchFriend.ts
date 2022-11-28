@@ -36,10 +36,12 @@ export default async function handler(
           }
           else{
             console.log("fail")
+            alert("No user found")
             return res.status(400).json({ success: false });
           }
         } catch (error) {
           console.log("ERROR");
+          alert("No user found")
           return res.status(400).json({ success: false });
         }
       }

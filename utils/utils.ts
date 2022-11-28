@@ -26,12 +26,35 @@ export interface StudentLogin {
   password: string;
 }
 
+export interface StudentFollow {
+  student_id_1: string;
+  student_id_2: string;
+}
+
 export interface FindFriend {
   student_id: string;
 }
 
 export interface SearchFriendResponse {
   student: string;
+}
+
+export interface followResponse {
+  success: boolean;
+  student_id: string;
+}
+
+export interface FollowFriend {
+  student_id_1: string;
+  student_id_2: string;
+}
+
+export async function follow({student_id_1, student_id_2}: FollowFriend): Promise<followResponse> {
+  const { data } = await axios.post("/api/follow", {
+    student_id_1,
+    student_id_2,
+  });
+  return data as followResponse
 }
 
 export async function searchFriend({
