@@ -54,7 +54,7 @@ export default async function handler(
             result.data.student_id.indexOf("@")
           )
         );
-        return res.status(201).json({ success: true});
+        return res.status(201).json({ success: true });
       } catch (error) {
         console.log("ERROR");
         return res.status(400).json({ success: false });
