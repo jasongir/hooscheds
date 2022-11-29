@@ -7,55 +7,59 @@ import { z } from "zod";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 export default function FollowAFriend() {
-    const router = useRouter();
-    const { student_id: sid } = router.query;
-    const sidRes = z.string().safeParse(sid);
-    
-    const queryClient = useQueryClient();
-	const student = queryClient.getQueryData(["auth"]) as LoggedInStudent
-    
-    // const [formState, setFormState] = useState<FollowFriend>({
-	// 	student_id_1: "",
-	// 	student_id_2: "",
-	// });
+  const router = useRouter();
+  const { student_id: sid } = router.query;
+  const sidRes = z.string().safeParse(sid);
 
-    const student_id_1= student.student_id;
-    const student_id_2 = sid as string;
+  const queryClient = useQueryClient();
+  const student = queryClient.getQueryData(["auth"]) as LoggedInStudent;
 
-    // setFormState({
-    //     ...formState,
-    //     student_id_1: student.student_id,
-    // })
+  // const [formState, setFormState] = useState<FollowFriend>({
+  // 	student_id_1: "",
+  // 	student_id_2: "",
+  // });
 
-    // setFormState({
-    //     ...formState,
-    //     student_id_2: sid as string,
-    // })
+  const student_id_1 = student.student_id;
+  const student_id_2 = sid as string;
 
-    const mode = "FOLLOW";
+  // setFormState({
+  //     ...formState,
+  //     student_id_1: student.student_id,
+  // })
 
-    const followMutation = useMutation(follow, {
-        onSuccess: (data) => {
-          console.log(data);
-        },
-        onError: (err) => console.log(err),
-      });
+  // setFormState({
+  //     ...formState,
+  //     student_id_2: sid as string,
+  // })
 
-    const onSubmitHandler = async (e: React.SyntheticEvent) => {
-        e.preventDefault();    
-        // const { student_id_1, student_id_2 } = formState;
-        if (mode === "FOLLOW") {
-            console.log("type", typeof student.student_id)
-            await followMutation.mutateAsync({student_id_1, student_id_2});
-            router.push(`/friends/${encodeURIComponent(student.student_id)}`);
-        }
-      };
-	return (
-		<>
-        <p>{sid}</p>
+  const mode = "FOLLOW";
+
+  const followMutation = useMutation(follow, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (err) => console.log(err),
+  });
+
+  const onSubmitHandler = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    // const { student_id_1, student_id_2 } = formState;
+    if (mode === "FOLLOW") {
+      console.log("type", typeof student.student_id);
+      await followMutation.mutateAsync({ student_id_1, student_id_2 });
+      router.push(`/friends/${encodeURIComponent(student.student_id)}`);
+    }
+  };
+  return (
+    <>
+      <div className="card card-header">
+        <h3 className="position">{sid}</h3>
         <form onSubmit={onSubmitHandler}>
-            <button>FOLLOW</button>
+          <div className="center">
+              <button className="btn btn-primary">FOLLOW</button>
+            </div>
         </form>
-		</>
-	);
+      </div>
+    </>
+  );
 }

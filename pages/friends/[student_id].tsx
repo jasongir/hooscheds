@@ -60,9 +60,11 @@ export default function Friends() {
 
       <form onSubmit={onSubmitHandler}>
         {errorMsg && <div>{errorMsg}</div>}
+        <div className="card">
+        <h4 className="card-header">Enter computingID to search for a friend: </h4>
         <HtmlInput
           name="student_id"
-          label="Enter computing id to search for a friend:"
+          label =""
           type="text"
           value={formState.student_id}
           onChange={(e: React.FormEvent) =>
@@ -72,7 +74,8 @@ export default function Friends() {
             })
           }
         />
-        <button>SEARCH</button>
+        <button className="btn btn-primary">Search</button>
+        </div>
       </form>
 
       <main>
