@@ -29,6 +29,9 @@ a {
   background-clip: border-box;
   border : 1px solid rgba(0,0,0,.125);
   border-radius: 0.25rem;
+  width:400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .mt-5, .my-5 {

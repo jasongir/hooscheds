@@ -54,6 +54,7 @@ export default function LogIn() {
           <div className="card">
             <h4 className="card-header">Log In</h4>
             <div className="card-body">
+              <div className="text-center mt-4">
               <HtmlInput
                 name="student_id"
                 label="Username:"
@@ -79,6 +80,7 @@ export default function LogIn() {
                 }
               />
               <button className="btn btn-primary">LOGIN</button>
+              </div>
             </div>
           </div>
         </div>
