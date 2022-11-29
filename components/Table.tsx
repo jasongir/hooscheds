@@ -1,4 +1,5 @@
 import Table from "react-bootstrap/Table";
+import Link from "next/link";
 
 interface FriendProps {
   student_id: string;
@@ -10,7 +11,11 @@ const FriendTable: React.FC<FriendProps> = ({ student_id }) => {
       <Table striped bordered hover>
         <tbody>
           <tr>
-            <th>{student_id}</th>
+            <th>
+              <Link href={`/schedule/${encodeURIComponent(student_id)}`}>
+                {student_id}
+              </Link>
+            </th>
           </tr>
         </tbody>
       </Table>

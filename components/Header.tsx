@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Container, Nav, Navbar, Row } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { use } from "react";
+import { LoggedInStudent } from "utils/utils";
 
 const NavItem = ({ href, text }: { href: string; text: string }) => (
 	<Nav.Link as="div">
@@ -24,6 +26,8 @@ const LogoutButton = () => {
 };
 
 export default function Header() {
+	const queryClient = useQueryClient();
+	const student = queryClient.getQueryData(["auth"]) as LoggedInStudent
 	return (
 		<Navbar expand="md">
 			<Container>
@@ -34,7 +38,7 @@ export default function Header() {
 					<NavItem href="/profile" text="My Profile" />
 					<NavItem href="/schedule" text="My Schedule" />
 					<NavItem href="/courses" text="Courses" />
-					<NavItem href="/friends/jag8thv" text="My Friends" />
+					<NavItem href={`/friends/${encodeURIComponent(student.student_id)}`} text="My Friends" />
 					<LogoutButton />
 				</Nav>
 			</Container>
