@@ -50,6 +50,7 @@ export default function SignUp() {
       setErrorMsg("your passwords do not match");
     } else if (student_id.indexOf("@") === -1) {
       setErrorMsg("please enter a valid email address with '@'");
+      alert("please enter a valid email address with '@'");
     } else if (
       password === confirmPassword &&
       student_id &&

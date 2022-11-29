@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { executeQuery } from "../../backend-utils/db";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
-import mysql from "mysql";
 
 
 export default async function handler(
