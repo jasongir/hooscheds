@@ -1,6 +1,11 @@
 import React, { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { getFriends, FindFriend, searchFriend } from "../../utils/utils";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  getFriends,
+  FindFriend,
+  searchFriend,
+  LoggedInStudent,
+} from "../../utils/utils";
 import FriendTable from "../../components/Table";
 import { useRouter } from "next/router";
 import { z } from "zod";
@@ -14,47 +19,43 @@ export default function Friends() {
 
   const { data, error } = useQuery(["Friends"], () => getFriends(sidRes.data));
 
-  console.log("data", data, error);
+  const queryClient = useQueryClient();
+  const student = queryClient.getQueryData(["auth"]) as LoggedInStudent;
+
+  console.log("my friends", data, error);
 
   const [formState, setFormState] = useState<FindFriend>({
     student_id: "",
   });
 
   const [errorMsg, setErrorMsg] = useState("");
-  const { data: searchResult, error:errorSearch } = useQuery(["Friends"], () => searchFriend( {...formState} ));
-
 
   const searchMutation = useMutation(searchFriend, {
     onSuccess: (data) => {
-      console.log(data);
+      console.log("success, data:", data);
+      if (!data.success) {
+        alert("user does not exist");
+      } else {
+        router.push(`search/${encodeURIComponent(data.student.student_id)}`);
+      }
     },
     onError: (err) => {
-      console.log(err);
-      alert()
+      console.log("it did not work:", err);
     },
   });
 
   const mode = "SEARCH";
 
-  
   const onSubmitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const { student_id } = formState;
     if (!student_id) {
       setErrorMsg("please enter the student id");
-      // alert("please enter your email");
     } else if (mode === "SEARCH" && student_id) {
-			// await searchMutation.mutateAsync({ student_id });
-      // console.log(searchResult)
-      // work on error handling --> when user does not exist
+      await searchMutation.mutateAsync({ student_id });
       const student_id_Res = z.string().safeParse(student_id);
-      if (!student_id_Res.success) {
-        return <p>ERROR: User does not exist</p>;
-      }
-    
-
-			router.push(`search/${encodeURIComponent(student_id)}`);
-		}
+      console.log("did it work:", searchMutation.data);
+    }
   };
 
   return (
