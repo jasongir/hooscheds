@@ -1,6 +1,6 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
-import { LoggedInStudent, follow, FollowFriend } from "../../utils/utils";
+import { LoggedInStudent, follow } from "../../../utils/utils";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { z } from "zod";
@@ -52,6 +52,7 @@ export default function FollowAFriend() {
       };
 	return (
 		<>
+        <h1> Search Result</h1>
         <p>{sid}</p>
         <form onSubmit={onSubmitHandler}>
             <button>FOLLOW</button>

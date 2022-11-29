@@ -21,12 +21,17 @@ export default function Friends() {
   });
 
   const [errorMsg, setErrorMsg] = useState("");
+  const { data: searchResult, error:errorSearch } = useQuery(["Friends"], () => searchFriend( {...formState} ));
+
 
   const searchMutation = useMutation(searchFriend, {
     onSuccess: (data) => {
       console.log(data);
     },
-    onError: (err) => console.log(err),
+    onError: (err) => {
+      console.log(err);
+      alert()
+    },
   });
 
   const mode = "SEARCH";
@@ -35,20 +40,20 @@ export default function Friends() {
   const onSubmitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const { student_id } = formState;
-
     if (!student_id) {
       setErrorMsg("please enter the student id");
       // alert("please enter your email");
     } else if (mode === "SEARCH" && student_id) {
-			await searchMutation.mutateAsync({ student_id });
-
+			// await searchMutation.mutateAsync({ student_id });
+      // console.log(searchResult)
       // work on error handling --> when user does not exist
       const student_id_Res = z.string().safeParse(student_id);
       if (!student_id_Res.success) {
         return <p>ERROR: User does not exist</p>;
       }
+    
 
-			router.push(`/search/${encodeURIComponent(student_id)}`);
+			router.push(`search/${encodeURIComponent(student_id)}`);
 		}
   };
 
