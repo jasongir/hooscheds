@@ -77,89 +77,109 @@ export default function SignUp() {
     <>
       {errorMsg && <p>{errorMsg}</p>}
       <form onSubmit={onSubmitHandler}>
-        <HtmlInput
-          name="student_id"
-          label="Email:"
-          type="text"
-          value={formState.student_id}
-          onChange={(e: React.FormEvent) =>
-            setFormState({
-              ...formState,
-              student_id: (e.target as HTMLInputElement).value,
-            })
-          }
-        />
-        <HtmlInput
-          name="password"
-          label="Password:"
-          type="password"
-          value={formState.password}
-          onChange={(e: React.FormEvent) =>
-            setFormState({
-              ...formState,
-              password: (e.target as HTMLInputElement).value,
-            })
-          }
-        />
-        <label>
-          Confirm Password:
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </label>
-        <HtmlInput
-          name="first_name"
-          label="First Name:"
-          type="text"
-          value={formState.first_name}
-          onChange={(e: React.FormEvent) =>
-            setFormState({
-              ...formState,
-              first_name: (e.target as HTMLInputElement).value,
-            })
-          }
-        />
-        <HtmlInput
-          name="last_name"
-          label="Last Name:"
-          type="text"
-          value={formState.last_name}
-          onChange={(e: React.FormEvent) =>
-            setFormState({
-              ...formState,
-              last_name: (e.target as HTMLInputElement).value,
-            })
-          }
-        />
-        <HtmlInput
-          name="year"
-          label="Year:"
-          type="number"
-          // min={1}
-          // max={5}
-          value={formState.year}
-          onChange={(e: React.FormEvent) =>
-            setFormState({
-              ...formState,
-              year: Number((e.target as HTMLInputElement).value),
-            })
-          }
-        />
-        <HtmlInput
-          name="primary_major"
-          label="Primary Major:"
-          type="text"
-          value={formState.primary_major}
-          onChange={(e: React.FormEvent) =>
-            setFormState({
-              ...formState,
-              primary_major: (e.target as HTMLInputElement).value,
-            })
-          }
-        />
-        <button>SIGN UP</button>
+        <div className="app-container">
+          <div className="col-md-6 offset-md-3 mt-5">
+            <div className="card">
+              <h4 className="card-header">Sign Up </h4>
+              <div className="card-body">
+                <div className="text-center mt-4">
+                  {/* <form>
+                  <div className="form-group">
+                    <label>Email :</label>
+                    <input name="student_id" type="text" className="form-control"></input>
+                  </div>
+                </form> */}
+                  <HtmlInput
+                    name="student_id"
+                    label="Email:"
+                    type="text"
+                    value={formState.student_id}
+                    onChange={(e: React.FormEvent) =>
+                      setFormState({
+                        ...formState,
+                        student_id: (e.target as HTMLInputElement).value,
+                      })
+                    }
+                  />
+                  <HtmlInput
+                    name="password"
+                    label="Password:"
+                    type="password"
+                    value={formState.password}
+                    onChange={(e: React.FormEvent) =>
+                      setFormState({
+                        ...formState,
+                        password: (e.target as HTMLInputElement).value,
+                      })
+                    }
+                  />
+                  <div className="form-group">
+                    <label>
+                      Confirm Password:
+                      <input
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        className="form-control"
+                      />
+                    </label>
+                  </div>
+                  <HtmlInput
+                    name="first_name"
+                    label="First Name:"
+                    type="text"
+                    value={formState.first_name}
+                    onChange={(e: React.FormEvent) =>
+                      setFormState({
+                        ...formState,
+                        first_name: (e.target as HTMLInputElement).value,
+                      })
+                    }
+                  />
+                  <HtmlInput
+                    name="last_name"
+                    label="Last Name:"
+                    type="text"
+                    value={formState.last_name}
+                    onChange={(e: React.FormEvent) =>
+                      setFormState({
+                        ...formState,
+                        last_name: (e.target as HTMLInputElement).value,
+                      })
+                    }
+                  />
+                  <HtmlInput
+                    name="year"
+                    label="Year:"
+                    type="number"
+                    // min={1}
+                    // max={5}
+                    value={formState.year}
+                    onChange={(e: React.FormEvent) =>
+                      setFormState({
+                        ...formState,
+                        year: Number((e.target as HTMLInputElement).value),
+                      })
+                    }
+                  />
+                  <HtmlInput
+                    name="primary_major"
+                    label="Primary Major:"
+                    type="text"
+                    value={formState.primary_major}
+                    onChange={(e: React.FormEvent) =>
+                      setFormState({
+                        ...formState,
+                        primary_major: (e.target as HTMLInputElement).value,
+                      })
+                    }
+                  />
+                  <button className="btn btn-primary">SIGN UP</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
     </>
   );
