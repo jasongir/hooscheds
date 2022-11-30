@@ -62,7 +62,7 @@ export default async function handler(
 				],
 				"Failed to delete from schedule"
 			);
-			res.status(202).json(data);
+			return res.status(202).json(data);
 		} catch (error) {}
 
 		return res.status(400).json({

@@ -57,13 +57,26 @@ export default function DisplaySchedule() {
 						nowIndicator={true}
 						editable={true}
 						events={courses.map((course) => {
+							var start_time = course.start_time;
+							if (parseInt(start_time.slice(0, 2)) < 9) {
+								start_time =
+									(parseInt(start_time.slice(0, 2)) + 12).toString() +
+									start_time.slice(1);
+							}
+							var end_time = course.end_time;
+							if (parseInt(end_time.slice(0, 2)) < 9) {
+								end_time =
+									(parseInt(end_time.slice(0, 2)) + 12).toString() +
+									end_time.slice(1);
+							}
+							console.log(start_time, end_time);
 							return {
 								title: course.course_id,
 								start: new Date(),
 								groupId: course.course_id,
 								daysOfWeek: daysToNums(course.meeting_dates),
-								startTime: course.start_time,
-								endTime: course.end_time,
+								startTime: start_time,
+								endTime: end_time,
 								extendedProps: { section_id: course.section_id },
 							};
 						})}
@@ -83,6 +96,12 @@ export default function DisplaySchedule() {
 									`Are you sure you want to delete ${course_id}?`
 								);
 								if (result && course_id) {
+									console.log(
+										"schedule delete requirements",
+										schedules[0].schedule_id,
+										course_id,
+										eventInfo.event.extendedProps.section_id
+									);
 									const result = await scheduleMutation.mutateAsync({
 										schedule_id: schedules[0].schedule_id,
 										course_id,
