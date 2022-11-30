@@ -16,6 +16,7 @@ import { daysToNums } from "utils/misc";
 import { useQuery } from "@tanstack/react-query";
 import { Html } from "next/document";
 import JSXStyle from "styled-jsx/style";
+import { z } from "zod";
 
 /* TODO: 
    2. Find all sections included in that schedule from section_schedule
@@ -26,9 +27,12 @@ import JSXStyle from "styled-jsx/style";
 export default function DisplaySchedule() {
 	const queryClient = useQueryClient();
 	const student = queryClient.getQueryData(["auth"]) as LoggedInStudent;
+	const router = useRouter();
+	const validatedId = z.string().safeParse(router.query.id);
+	const id = validatedId.success ? validatedId.data : student.student_id;
 	const { data: schedules, error: schedulesError } = useQuery(
 		["Schedules"],
-		() => getSchedules(student.student_id)
+		() => getSchedules(id)
 	);
 	const scheduleMutation = useMutation({
 		mutationKey: ["Schedules"],
@@ -36,16 +40,17 @@ export default function DisplaySchedule() {
 		onSuccess: () => queryClient.invalidateQueries(["Schedules"]),
 	});
 	const { data: courses, error: coursesError } = useQuery(["Courses"], () =>
-		getTimings(student.student_id)
+		getTimings(id)
 	);
+
+	const scheduleOwner = id === student.student_id ? student.first_name : id;
 	return (
 		courses &&
 		schedules && (
 			<>
 				<div className="p-3 text-center bg-light">
-					<h1 className="mb-3">{student.first_name}'s Schedule</h1>
+					<h1 className="mb-3">{scheduleOwner}'s Schedule</h1>
 					<h3>{schedules[0].name}</h3>
-
 					<FullCalendar
 						plugins={[interactionPlugin, timeGridPlugin]}
 						initialView="timeGridWeek"
@@ -63,6 +68,7 @@ export default function DisplaySchedule() {
 							};
 						})}
 						eventDidMount={async (eventInfo) => {
+							if (id !== student.student_id) return;
 							console.log(eventInfo.event.extendedProps);
 							const course_id =
 								eventInfo.el.querySelector(
