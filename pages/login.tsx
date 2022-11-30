@@ -83,7 +83,7 @@ export default function LogIn() {
                 }
               />
               <button className="btn btn-primary">LOGIN</button>
-              <p style={{"margin-bottom":"0"}}>Haven't Registered Yet? </p> 
+              <p>Haven't Registered Yet? </p> 
               <button className="btn btn-primary">SIGNUP</button>
             </div>
           </div>
