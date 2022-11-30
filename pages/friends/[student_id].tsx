@@ -14,15 +14,11 @@ import HtmlInput from "../../components/HtmlInput";
 export default function Friends() {
   const router = useRouter();
   const { student_id: sid } = router.query;
-  const sidRes = z.string().safeParse(sid);
-  if (!sidRes.success) return <p>ERROR: incorrectly formatted ComputingID</p>;
 
-  const { data, error } = useQuery(["Friends"], () => getFriends(sidRes.data));
+  const { data, error } = useQuery(["Friends"], () => getFriends(sid as string));
 
   const queryClient = useQueryClient();
   const student = queryClient.getQueryData(["auth"]) as LoggedInStudent;
-
-  console.log("my friends", data, error);
 
   const [formState, setFormState] = useState<FindFriend>({
     student_id: "",
@@ -33,11 +29,7 @@ export default function Friends() {
   const searchMutation = useMutation(searchFriend, {
     onSuccess: (data) => {
       console.log("success, data:", data);
-      if (!data.success) {
-        alert("user does not exist");
-      } else {
-        router.push(`search/${encodeURIComponent(data.student.student_id)}`);
-      }
+      router.push(`search/${encodeURIComponent(data.student)}`);
     },
     onError: (err) => {
       console.log("it did not work:", err);
@@ -61,7 +53,7 @@ export default function Friends() {
   return (
     <>
       <div className="p-3 text-center bg-light">
-        <h1 className="mb-3">{sid}'s Friends</h1>
+        <h1 className="mb-3">{sid}&apos;s Friends</h1>
       </div>
 
       <form onSubmit={onSubmitHandler}>

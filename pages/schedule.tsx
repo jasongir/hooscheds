@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -11,13 +11,21 @@ import {
 	getTimings,
 	deleteFromSchedule,
 	DeleteRequest,
+	like,
+	getLikes,
 } from "utils/utils";
 import { daysToNums } from "utils/misc";
 import { useQuery } from "@tanstack/react-query";
-import { Html } from "next/document";
 import JSXStyle from "styled-jsx/style";
 import { z } from "zod";
 import Comments from "components/comments/Comments";
+// import Heart = require("react-heart");
+import dynamic from "next/dynamic";
+// import { Suspense } from "react";
+
+const Heart = dynamic(() => import("react-heart"), {
+	ssr: false,
+});
 
 /* TODO: 
    2. Find all sections included in that schedule from section_schedule
@@ -45,13 +53,51 @@ export default function DisplaySchedule() {
 	);
 
 	const scheduleOwner = id === student.student_id ? student.first_name : id;
+
+	const { data: userLike, error: errorLike } = useQuery(["Likes"], () =>
+		getLikes(student.student_id)
+	);
+
+	const [active, setActive] = useState(false);
+	useEffect(() => {
+		if (schedules) {
+			// we check if the current user's likes include the current post
+			userLike?.body.forEach((like) => {
+				if (like.schedule_id === schedules[0].schedule_id) setActive(true);
+				else setActive(false);
+			});
+		}
+	}, [schedules, userLike, like, setActive]);
+
+	const likeMutation = useMutation(like, {
+		onSuccess: (data) => {
+			console.log("like works:", data);
+			queryClient.invalidateQueries(["Likes", "Schedules"]);
+		},
+		onError: (err) => console.log(err),
+	});
+
+	const onClickHandler = async () => {
+		// const { student_id_1, student_id_2 } = formState;
+		if (!schedules || schedules.length === 0) return;
+		const data = likeMutation.mutate({
+			student_id: student.student_id,
+			schedule_id: schedules[0].schedule_id,
+			isLiking: !active,
+		});
+		setActive(!active);
+		// console.log("like is now", active, data);
+		// router.push(`/schedule/${encodeURIComponent(student.student_id)}`);
+	};
+
 	return (
 		courses &&
-		schedules && (
+		schedules &&
+		schedules[0] && (
 			<>
 				<div className="p-3 text-center bg-light">
-					<h1 className="mb-3">{scheduleOwner}'s Schedule</h1>
-					<h3>{schedules[0].name}</h3>
+					<h1 className="mb-3">{scheduleOwner}&apos;s Schedule</h1>
+					{schedules[0] && <h3>{schedules[0].name}</h3>}
 					<FullCalendar
 						plugins={[interactionPlugin, timeGridPlugin]}
 						initialView="timeGridWeek"
@@ -78,7 +124,9 @@ export default function DisplaySchedule() {
 								daysOfWeek: daysToNums(course.meeting_dates),
 								startTime: start_time,
 								endTime: end_time,
-								extendedProps: { section_id: course.section_id },
+								extendedProps: {
+									section_id: course.section_id,
+								},
 							};
 						})}
 						eventDidMount={async (eventInfo) => {
@@ -115,6 +163,10 @@ export default function DisplaySchedule() {
 							eventInfo.el.appendChild(button);
 						}}
 					/>
+				</div>
+				<div style={{ width: "2rem" }}>
+					<Heart isActive={active} onClick={onClickHandler} />
+					<p>{schedules[0].num_likes}</p>
 				</div>
 				<Comments
 					schedule_id={schedules[0].schedule_id}
