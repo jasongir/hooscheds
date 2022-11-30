@@ -15,14 +15,12 @@ export default function Friends() {
   const router = useRouter();
   const { student_id: sid } = router.query;
   const sidRes = z.string().safeParse(sid);
-  if (!sidRes.success) return <p>ERROR: incorrectly formatted ComputingID</p>;
+  if (!sidRes.success) {return <p>ERROR: incorrectly formatted ComputingID</p>;}
 
   const { data, error } = useQuery(["Friends"], () => getFriends(sidRes.data));
 
   const queryClient = useQueryClient();
   const student = queryClient.getQueryData(["auth"]) as LoggedInStudent;
-
-  console.log("my friends", data, error);
 
   const [formState, setFormState] = useState<FindFriend>({
     student_id: "",
@@ -33,11 +31,7 @@ export default function Friends() {
   const searchMutation = useMutation(searchFriend, {
     onSuccess: (data) => {
       console.log("success, data:", data);
-      if (!data.success) {
-        alert("user does not exist");
-      } else {
-        router.push(`search/${encodeURIComponent(data.student.student_id)}`);
-      }
+      router.push(`search/${encodeURIComponent(data.student)}`);
     },
     onError: (err) => {
       console.log("it did not work:", err);

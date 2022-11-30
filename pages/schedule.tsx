@@ -32,7 +32,7 @@ const Heart = dynamic(() => import("react-heart"), {
    4. Convert the section information into a form displayable in a calendar
    5. Display the schedule on a calendar */
 
-const DisplaySchedule = () => {
+export default function DisplaySchedule(){
 	const queryClient = useQueryClient();
 	const student = queryClient.getQueryData(["auth"]) as LoggedInStudent;
 	const router = useRouter();
@@ -176,5 +176,3 @@ const DisplaySchedule = () => {
 		)
 	);
 };
-
-export default DisplaySchedule;

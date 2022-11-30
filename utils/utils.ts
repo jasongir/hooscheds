@@ -40,11 +40,10 @@ export interface FindFriend {
 //   student: string;
 // }
 
-export type SearchFriendResponse =
-	| {
-			student: string;
-	  }
-	| { success: boolean };
+export interface SearchFriendResponse{
+	success: boolean;
+	student: string;
+}
 
 export interface likeResponse {
 	success: boolean;
@@ -139,7 +138,7 @@ export async function searchFriend({
 		return data as SearchFriendResponse;
 	} catch (err) {
 		console.log(err);
-		return { success: false };
+		return { success: false, student: "" };
 	}
 }
 
