@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Html } from "next/document";
 import JSXStyle from "styled-jsx/style";
 import { z } from "zod";
+import Comments from "components/comments/Comments";
 
 /* TODO: 
    2. Find all sections included in that schedule from section_schedule
@@ -115,6 +116,10 @@ export default function DisplaySchedule() {
 						}}
 					/>
 				</div>
+				<Comments
+					schedule_id={schedules[0].schedule_id}
+					student_id={student.student_id}
+				/>
 			</>
 		)
 	);

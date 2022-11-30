@@ -1,4 +1,5 @@
 import axios from "axios";
+import { type } from "os";
 import { AbortedDeferredError } from "react-router-dom";
 import { CourseSection } from "./types";
 
@@ -236,4 +237,77 @@ export async function deleteFromSchedule(deleteRequestData: DeleteRequest) {
 		console.error(error);
 	}
 	return [];
+}
+
+export type GetCommentData = {
+	schedule_id: string;
+};
+export interface getCommentResponse {
+	comment_id: string;
+	student_id: string;
+	schedule_id: string;
+	comment_text: string;
+}
+
+export async function getScheduleComments(getCommentData: GetCommentData) {
+	try {
+		const { data } = await axios.get("/api/comment", {
+			params: getCommentData,
+		});
+		return data as { success: boolean; body: getCommentResponse[] };
+	} catch (error) {}
+	return { success: false };
+}
+
+export interface CreateCommentData {
+	student_id: string;
+	schedule_id: string;
+	comment_text: string;
+}
+
+export async function createScheduleComment(
+	createCommentData: CreateCommentData
+) {
+	try {
+		const { data } = await axios.post("/api/comment", createCommentData);
+		return data;
+	} catch (error) {
+		console.error(error);
+		return { success: false, body: [] };
+	}
+}
+
+export interface UpdateCommentData {
+	comment_id: number;
+	student_id: string;
+	schedule_id: string;
+	comment_text: string;
+}
+
+export async function updateComment(updateCommentData: UpdateCommentData) {
+	try {
+		const { data } = await axios.put("/api/comment", updateCommentData);
+		return data;
+	} catch (error) {
+		console.error(error);
+		return { success: false, body: [] };
+	}
+}
+
+export interface DeleteComment {
+	comment_id: number;
+	student_id: string;
+	schedule_id: string;
+}
+
+export async function deleteComment(deleteCommentData: DeleteComment) {
+	try {
+		const { data } = await axios.delete(
+			`/api/comment/${deleteCommentData.comment_id}`
+		);
+		return data;
+	} catch (error) {
+		console.error(error);
+		return {};
+	}
 }
