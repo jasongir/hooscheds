@@ -34,7 +34,7 @@ export default function Friends() {
     onSuccess: (data) => {
       console.log("success, data:", data);
       if (!data.success) {
-        alert("user does not exist");
+        setErrorMsg("user does not exist");
       } else {
         router.push(`search/${encodeURIComponent(data.student.student_id)}`);
       }
@@ -67,20 +67,22 @@ export default function Friends() {
       <form onSubmit={onSubmitHandler}>
         {errorMsg && <div>{errorMsg}</div>}
         <div className="card">
-        <h4 className="card-header">Enter computingID to search for a friend: </h4>
-        <HtmlInput
-          name="student_id"
-          label =""
-          type="text"
-          value={formState.student_id}
-          onChange={(e: React.FormEvent) =>
-            setFormState({
-              ...formState,
-              student_id: (e.target as HTMLInputElement).value,
-            })
-          }
-        />
-        <button className="btn btn-primary">Search</button>
+          <h4 className="card-header">
+            Enter computingID to search for a friend:{" "}
+          </h4>
+          <HtmlInput
+            name="student_id"
+            label=""
+            type="text"
+            value={formState.student_id}
+            onChange={(e: React.FormEvent) =>
+              setFormState({
+                ...formState,
+                student_id: (e.target as HTMLInputElement).value,
+              })
+            }
+          />
+          <button className="btn btn-primary">Search</button>
         </div>
       </form>
 

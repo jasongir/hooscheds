@@ -3,7 +3,6 @@ import { executeQuery } from "../../backend-utils/db";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -26,7 +25,9 @@ export default async function handler(
     });
 
     const result = RequestStudent.safeParse(reqData);
+
     if (!result.success) {
+      console.log("is it here");
       return res.status(400).json({ success: false });
     } else {
       try {
@@ -42,6 +43,7 @@ export default async function handler(
           ],
           "Failed to find user"
         );
+        if (data.length === 0) return res.status(400).json({ success: false });
         console.log(data);
         // create a JWT token valid for 1 hour here
         const token = jwt.sign(
@@ -51,9 +53,12 @@ export default async function handler(
           },
           result.data.password
         );
-        return res.status(200).json({ token: token, student: data[0] });
+        return res
+          .status(200)
+          .json({ token: token, student: data[0], success: true });
       } catch (error) {
-        console.log(error);
+        console.log("error:", error);
+
         return res.status(400).json({ success: false });
       }
     }

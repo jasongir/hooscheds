@@ -17,14 +17,21 @@ export default function LogIn() {
   const loginMutation = useMutation(postStudentLogIn, {
     cacheTime: 3.6e6,
     onSuccess: (data) => {
-      console.log(data);
-      localStorage.setItem("token", data.token);
-      queryClient.setQueryData(["auth"], data.student);
+      if (!data.success) {
+        setErrorMsg("Incorrect password. Please enter a correct password");
+      } else {
+        localStorage.setItem("token", data.token);
+        queryClient.setQueryData(["auth"], data.student);
+        console.log(loginMutation);
+      }
+
       // console.log(queryClient.getQueryData(["auth"]));
       // queryClient.invalidateQueries(["auth"]);
       // alert("Logged in sucessfully as " + data.student["first_name"]);
     },
-    onError: (err) => console.log(err),
+    onError: (err) => {
+      setErrorMsg("password does not match");
+    },
   });
 
   const mode = "LOGIN";
@@ -34,15 +41,22 @@ export default function LogIn() {
     const { student_id, password } = formState;
 
     if (!student_id) {
+      //   setErrorMsg("please enter your email");
       setErrorMsg("please enter your email");
-      // alert("please enter your email");
     } else if (!password) {
+      //   setErrorMsg("please enter your password");
       setErrorMsg("please enter your password");
-      // alert("please enter your password");
     } else if (mode === "LOGIN" && student_id && password) {
-      await loginMutation.mutateAsync({ student_id, password });
+      await loginMutation.mutateAsync(
+        { student_id, password },
+        {
+          onSuccess: (res) => {
+            console.log(res);
+            if (res.success) router.push("/");
+          },
+        }
+      );
       console.log(queryClient.getQueryData(["auth"]));
-      router.push("/home");
     }
   };
 

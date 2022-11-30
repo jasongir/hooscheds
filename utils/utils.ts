@@ -1,5 +1,6 @@
 import axios from "axios";
 import internal from "stream";
+import { StringValidation } from "zod";
 
 //signup
 export interface Student {
@@ -39,9 +40,11 @@ export interface FindFriend {
 //   student: string;
 // }
 
-export type SearchFriendResponse = {
-  student: string;
-} | {success: boolean}
+export type SearchFriendResponse =
+  | {
+      student: string;
+    }
+  | { success: boolean };
 
 export interface followResponse {
   success: boolean;
@@ -53,12 +56,15 @@ export interface FollowFriend {
   student_id_2: string;
 }
 
-export async function follow({student_id_1, student_id_2}: FollowFriend): Promise<followResponse> {
+export async function follow({
+  student_id_1,
+  student_id_2,
+}: FollowFriend): Promise<followResponse> {
   const { data } = await axios.post("/api/follow", {
     student_id_1,
     student_id_2,
   });
-  return data as followResponse
+  return data as followResponse;
 }
 
 export interface UnfollowFriend {
@@ -71,28 +77,30 @@ export interface unfollowResponse {
   student_id: string;
 }
 
-export async function unfollow({student_id_1, student_id_2}: UnfollowFriend): Promise<unfollowResponse> {
+export async function unfollow({
+  student_id_1,
+  student_id_2,
+}: UnfollowFriend): Promise<unfollowResponse> {
   const { data } = await axios.post("/api/unfollow", {
     student_id_1,
     student_id_2,
   });
-  return data as unfollowResponse
+  return data as unfollowResponse;
 }
 
 export async function searchFriend({
   student_id,
 }: FindFriend): Promise<SearchFriendResponse> {
-  try{
+  try {
     const { data } = await axios.post("/api/searchFriend", {
       student_id,
     });
-    console.log("searchFriend working" , data);
+    console.log("searchFriend working", data);
     return data as SearchFriendResponse;
-  } catch(err){
-    console.log(err)
-    return {success: false}
+  } catch (err) {
+    console.log(err);
+    return { success: false };
   }
-
 }
 
 export interface PostResponse {
@@ -126,19 +134,49 @@ export async function getFriends(student_id: string): Promise<Student[]> {
   return data as Student[];
 }
 
-export interface LoginResponse {
-  token: string;
-  student: LoggedInStudent;
-}
+export type LoginResponse =
+  | {
+      token: string;
+      student: LoggedInStudent;
+    }
+  | { success: boolean };
 
 export async function postStudentLogIn({
   student_id,
   password,
 }: StudentLogin): Promise<LoginResponse> {
-  const { data } = await axios.post("/api/login", {
-    student_id,
-    password,
-  });
-  console.log(data);
-  return data as LoginResponse;
+  try {
+    const { data } = await axios.post("/api/login", {
+      student_id,
+      password,
+    });
+    console.log(data);
+    return data as LoginResponse;
+  } catch (err) {
+    console.log(err);
+    return { success: false };
+  }
 }
+
+// export async function checkPasswordError({
+//   student_id,
+//   password,
+// }: StudentLogin): Promise<CheckPasswordResponse> {
+//   try {
+//     const { data } = await axios.post("/api/searchFriend", {
+//       student_id,
+//     });
+//     console.log("searchFriend working", data);
+//     return data as CheckPasswordResponse;
+//   } catch (err) {
+//     console.log(err);
+//     return { success: false };
+//   }
+// }
+
+// export type CheckPasswordResponse =
+//   | {
+//       student_id: string;
+//       password: string;
+//     }
+//   | { success: boolean };
