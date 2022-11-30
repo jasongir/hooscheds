@@ -1,9 +1,10 @@
 import React from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 import FullCalendar, { DaySeriesModel } from '@fullcalendar/react'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import { LoggedInStudent, getSchedules, getTimings, Schedule, Timings } from "utils/utils";
+import { LoggedInStudent, getSchedules, getTimings, daysToNums } from "utils/utils";
 import { useQuery } from "@tanstack/react-query";
 
 /* TODO: 
@@ -15,23 +16,13 @@ import { useQuery } from "@tanstack/react-query";
 export default function DisplaySchedule() {
   const queryClient = useQueryClient();
   const student = queryClient.getQueryData(["auth"]) as LoggedInStudent
-  
-  const { data:schedules, dataError } = useQuery(["Schedules"], () => getSchedules(student.student_id));
-  const { data:courses, coursesError} = useQuery(["Courses"], () => getTimings("ac7ncw-1"));
-  let first_schedule: Schedule;
-
-  if (courses) {
-    // first_schedule = data[0] as Schedule
-    // console.log(first_schedule)
-  }
-  
-  
-  return (
-    courses && (
+    const { data:schedules, error:schedulesError} = useQuery(["Schedules"], () => getSchedules(student.student_id));
+    const { data:courses, error:coursesError} = useQuery(["Courses"], () => getTimings(student.student_id));
+    return courses && schedules && (
     <>
       <div className="p-3 text-center bg-light">
         <h1 className="mb-3">{student.first_name}'s Schedule</h1>
-        <h3>{courses[0].course_id}</h3>
+        <h3>{schedules[0].name}</h3>
         
                 <FullCalendar
           plugins={[interactionPlugin, timeGridPlugin]}
@@ -54,43 +45,6 @@ export default function DisplaySchedule() {
           }
         />
       </div>
-      {/* <div className="input-group">
-        <div className="form-outline">
-          <input type="search" id="form1" className="form-control" />
-          <label className="form-label" htmlFor="form1">
-            Search
-          </label>
-        </div>
-        <button type="button" className="btn btn-primary">
-          <i className="fas fa-search"></i>
-        </button>
-      </div> */}
-    </>)
-  );
+    </>);
 }
 
-function daysToNums(days: String):String[]{
-  let numArray:String[] = []
-  for (let i = 0; i <= days.length-2; i+= 2){
-    const day = days.slice(i, i+2);
-    if(day === 'Mo'){
-      numArray.push('1')
-    }
-    else if (day === 'Tu'){
-      numArray.push('2')
-    }
-    else if (day === 'We'){
-      numArray.push('3')
-    }
-    else if (day === 'Th'){
-      numArray.push('4')
-    }
-    else if (day === 'Fr'){
-      numArray.push('5')
-    }
-
-  }
-  
-  return numArray
-  
-}

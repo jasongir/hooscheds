@@ -114,13 +114,13 @@ export async function getSchedules(student_id: string): Promise<Schedule[]> {
   return data as Schedule[];
 }
 
-export async function getTimings(schedule_id: string): Promise<Timings[]> {
-  const { data } = await axios.get("/api/timings/" + schedule_id);
+export async function getTimings(student_id: string): Promise<Timings[]> {
+  const { data:schedule } = await axios.get("/api/schedules/" + student_id);
+  const { data } = await axios.get("/api/timings/" + schedule[0].schedule_id);
   return data as Timings[];
 }
 
 export async function getFriends(student_id: string): Promise<Student[]> {
-  console.log("Hi");
   let sid = student_id;
   console.log(sid);
   const { data } = await axios.get("/api/friends/" + sid);
@@ -142,4 +142,30 @@ export async function postStudentLogIn({
   });
   console.log(data);
   return data as LoginResponse;
+}
+
+export function daysToNums(days: String):String[]{
+  let numArray:String[] = []
+  for (let i = 0; i <= days.length-2; i+= 2){
+    const day = days.slice(i, i+2);
+    if(day === 'Mo'){
+      numArray.push('1')
+    }
+    else if (day === 'Tu'){
+      numArray.push('2')
+    }
+    else if (day === 'We'){
+      numArray.push('3')
+    }
+    else if (day === 'Th'){
+      numArray.push('4')
+    }
+    else if (day === 'Fr'){
+      numArray.push('5')
+    }
+
+  }
+  
+  return numArray
+  
 }
