@@ -46,6 +46,46 @@ export type SearchFriendResponse =
 	  }
 	| { success: boolean };
 
+export interface likeResponse {
+	success: boolean;
+	student_id: string;
+}
+
+export interface likeSchedule {
+	student_id: string;
+	schedule_id: string;
+	isLiking: boolean;
+}
+
+export interface userLike {
+	student_id: string;
+}
+
+export interface getLikeResponse {
+	success: boolean;
+	body: { student_id: string; schedule_id: string }[];
+}
+
+export async function getLikes(student_id: string): Promise<getLikeResponse> {
+	const { data } = await axios.get("/api/like", {
+		params: { student_id },
+	});
+	return data as getLikeResponse;
+}
+
+export async function like(likeData: likeSchedule): Promise<likeResponse> {
+	try {
+		const { data } = await axios.post("/api/like", likeData);
+		return data as likeResponse;
+	} catch (error) {
+		console.error(error);
+		return {
+			success: false,
+			student_id: "",
+		};
+	}
+}
+
 export interface followResponse {
 	success: boolean;
 	student_id: string;
