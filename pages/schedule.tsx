@@ -1,5 +1,6 @@
 import React from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import FullCalendar, { DaySeriesModel } from '@fullcalendar/react'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -16,14 +17,20 @@ import JSXStyle from "styled-jsx/style";
           5. Display the schedule on a calendar */
 
 export default function DisplaySchedule() {
+  const router = useRouter();
+  let id = router.query.id;
   const queryClient = useQueryClient();
   const student = queryClient.getQueryData(["auth"]) as LoggedInStudent
-    const { data:schedules, error:schedulesError} = useQuery(["Schedules"], () => getSchedules(student.student_id));
-    const { data:courses, error:coursesError} = useQuery(["Courses"], () => getTimings(student.student_id));
+  if (!id){
+    id = student.student_id;
+    console.log(id)
+  }
+    const { data:schedules, error:schedulesError} = useQuery(["Schedules"], () => getSchedules(id));
+    const { data:courses, error:coursesError} = useQuery(["Courses"], () => getTimings(id));
     return courses && schedules && (
     <>
       <div className="p-3 text-center bg-light">
-        <h1 className="mb-3">{student.first_name}'s Schedule</h1>
+        {!id && (<h1 className="mb-3">{student.first_name}'s Schedule</h1>)}
         <h3>{schedules[0].name}</h3>
         
                 <FullCalendar

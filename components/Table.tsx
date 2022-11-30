@@ -41,7 +41,7 @@ const FriendTable: React.FC<FriendProps> = ({ student_id }) => {
         <tbody>
           <tr>
             <th>
-              <Link href={`/schedule/${encodeURIComponent(student_id)}`}>
+              <Link href={`/schedule/?id=${encodeURIComponent(student_id)}`}>
                 {student_id}
               </Link>
               <form onSubmit={onSubmitHandler}>
