@@ -1,6 +1,6 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
-import { LoggedInStudent, follow, searchFriend } from "../../../utils/utils";
+import { LoggedInStudent, follow, getFriends } from "../../../utils/utils";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { z } from "zod";
@@ -16,29 +16,10 @@ export default function FollowAFriend() {
   const queryClient = useQueryClient();
   const student = queryClient.getQueryData(["auth"]) as LoggedInStudent;
 
-  // if(!searchResult?.success){
-  //     router.push(`/friends/${encodeURIComponent(student.student_id)}`);
-  // }
-
-  // const [formState, setFormState] = useState<FollowFriend>({
-  // 	student_id_1: "",
-  // 	student_id_2: "",
-  // });
-
   const student_id_1 = student.student_id;
   const student_id_2 = sid as string;
 
-  // setFormState({
-  //     ...formState,
-  //     student_id_1: student.student_id,
-  // })
-
-  // setFormState({
-  //     ...formState,
-  //     student_id_2: sid as string,
-  // })
-
-  const mode = "FOLLOW";
+  const [mode, setMode] = useState<"FOLLOW" | "FOLLOWING">("FOLLOW");
 
   const followMutation = useMutation(follow, {
     onSuccess: (data) => {
@@ -46,6 +27,22 @@ export default function FollowAFriend() {
     },
     onError: (err) => console.log(err),
   });
+
+  const { data, error } = useQuery(["Friends"], () => getFriends(student_id_1));
+
+  console.log("user's friend data:", data);
+
+  useEffect(() => {
+    for (let i = 0; i < data.length; i++) {
+      if (student_id_2 === data[i].student_id_2) {
+        setMode("FOLLOWING");
+      }
+    }
+  }, []);
+
+  //   if (student_id_2 in data.stu) {
+  //     setMode("FOLLOWING");
+  //   }
 
   const onSubmitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -56,12 +53,13 @@ export default function FollowAFriend() {
       router.push(`/friends/${encodeURIComponent(student.student_id)}`);
     }
   };
+
   return (
     <>
       <h1> Search Result</h1>
       <p>{sid}</p>
       <form onSubmit={onSubmitHandler}>
-        <button>FOLLOW</button>
+        <button>{mode}</button>
       </form>
     </>
   );
