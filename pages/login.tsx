@@ -27,19 +27,23 @@ export default function LogIn() {
     onError: (err) => console.log(err),
   });
 
-  const mode = "LOGIN";
+  const mode1 = "LOGIN";
+  const mode2 = "SIGNUP";
 
   const onSubmitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const { student_id, password } = formState;
 
+    if(mode2 === "SIGNUP"){
+      router.push("/signup");
+    }
     if (!student_id) {
       setErrorMsg("please enter your email");
       // alert("please enter your email");
     } else if (!password) {
       setErrorMsg("please enter your password");
       // alert("please enter your password");
-    } else if (mode === "LOGIN" && student_id && password) {
+    } else if (mode1 === "LOGIN" && student_id && password) {
       await loginMutation.mutateAsync({ student_id, password });
       console.log(queryClient.getQueryData(["auth"]));
       router.push("/home");
@@ -79,6 +83,8 @@ export default function LogIn() {
                 }
               />
               <button className="btn btn-primary">LOGIN</button>
+              <p style={{"margin-bottom":"0"}}>Haven't Registered Yet? </p> 
+              <button className="btn btn-primary">SIGNUP</button>
             </div>
           </div>
         </div>
