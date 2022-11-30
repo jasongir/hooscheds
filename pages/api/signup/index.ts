@@ -7,7 +7,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    console.log("POST");
     const reqData = {
       student_id: req.body.student_id,
       password: req.body.password,
