@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Student, postStudent } from "../utils/utils";
 import HtmlInput from "../components/HtmlInput";
+import Link from "next/link";
 
 export default function SignUp() {
 	const router = useRouter();
@@ -92,7 +93,7 @@ export default function SignUp() {
 									<HtmlInput
 										name="student_id"
 										label="Email:"
-										type="text"
+										type="email"
 										value={formState.student_id}
 										onChange={(e: React.FormEvent) =>
 											setFormState({
@@ -184,7 +185,13 @@ export default function SignUp() {
 											})
 										}
 									/>
-									<button className="btn btn-primary">SIGN UP</button>
+									<button className="btn btn-primary" type="submit">
+										SIGN UP
+									</button>
+									<p>Already have an account?</p>
+									<Link className="btn btn-primary" href="/login">
+										LOGIN
+									</Link>
 								</div>
 							</div>
 						</div>
