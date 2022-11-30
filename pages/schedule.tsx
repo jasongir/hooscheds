@@ -18,6 +18,7 @@ import { daysToNums } from "utils/misc";
 import { useQuery } from "@tanstack/react-query";
 import JSXStyle from "styled-jsx/style";
 import { z } from "zod";
+import Comments from "components/comments/Comments";
 // import Heart = require("react-heart");
 import dynamic from "next/dynamic";
 // import { Suspense } from "react";
@@ -32,7 +33,7 @@ const Heart = dynamic(() => import("react-heart"), {
    4. Convert the section information into a form displayable in a calendar
    5. Display the schedule on a calendar */
 
-export default function DisplaySchedule(){
+export default function DisplaySchedule() {
 	const queryClient = useQueryClient();
 	const student = queryClient.getQueryData(["auth"]) as LoggedInStudent;
 	const router = useRouter();
@@ -62,8 +63,7 @@ export default function DisplaySchedule(){
 		if (schedules) {
 			// we check if the current user's likes include the current post
 			userLike?.body.forEach((like) => {
-				if (like.schedule_id === schedules[0].schedule_id)
-					setActive(true);
+				if (like.schedule_id === schedules[0].schedule_id) setActive(true);
 				else setActive(false);
 			});
 		}
@@ -93,11 +93,11 @@ export default function DisplaySchedule(){
 	return (
 		courses &&
 		schedules &&
-    schedules[0] && (
+		schedules[0] && (
 			<>
 				<div className="p-3 text-center bg-light">
 					<h1 className="mb-3">{scheduleOwner}&apos;s Schedule</h1>
-					{schedules[0] && (<h3>{schedules[0].name}</h3>)}
+					{schedules[0] && <h3>{schedules[0].name}</h3>}
 					<FullCalendar
 						plugins={[interactionPlugin, timeGridPlugin]}
 						initialView="timeGridWeek"
@@ -107,16 +107,14 @@ export default function DisplaySchedule(){
 							var start_time = course.start_time;
 							if (parseInt(start_time.slice(0, 2)) < 9) {
 								start_time =
-									(
-										parseInt(start_time.slice(0, 2)) + 12
-									).toString() + start_time.slice(1);
+									(parseInt(start_time.slice(0, 2)) + 12).toString() +
+									start_time.slice(1);
 							}
 							var end_time = course.end_time;
 							if (parseInt(end_time.slice(0, 2)) < 9) {
 								end_time =
-									(
-										parseInt(end_time.slice(0, 2)) + 12
-									).toString() + end_time.slice(1);
+									(parseInt(end_time.slice(0, 2)) + 12).toString() +
+									end_time.slice(1);
 							}
 							console.log(start_time, end_time);
 							return {
@@ -153,15 +151,12 @@ export default function DisplaySchedule(){
 										course_id,
 										eventInfo.event.extendedProps.section_id
 									);
-									const result =
-										await scheduleMutation.mutateAsync({
-											schedule_id:
-												schedules[0].schedule_id,
-											course_id,
-											section_id:
-												eventInfo.event.extendedProps
-													.section_id,
-										});
+									const result = await scheduleMutation.mutateAsync({
+										schedule_id: schedules[0].schedule_id,
+										course_id,
+										section_id:
+											eventInfo.event.extendedProps.section_id,
+									});
 								}
 							});
 
@@ -173,7 +168,11 @@ export default function DisplaySchedule(){
 					<Heart isActive={active} onClick={onClickHandler} />
 					<p>{schedules[0].num_likes}</p>
 				</div>
+				<Comments
+					schedule_id={schedules[0].schedule_id}
+					student_id={student.student_id}
+				/>
 			</>
 		)
 	);
-};
+}
