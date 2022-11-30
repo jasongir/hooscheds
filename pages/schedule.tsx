@@ -1,9 +1,9 @@
 import React from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import FullCalendar from '@fullcalendar/react'
+import FullCalendar, { DaySeriesModel } from '@fullcalendar/react'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import { LoggedInStudent, getSchedules, getTimings, Schedule } from "utils/utils";
+import { LoggedInStudent, getSchedules, getTimings, Schedule, Timings } from "utils/utils";
 import { useQuery } from "@tanstack/react-query";
 
 /* TODO: 
@@ -16,35 +16,42 @@ export default function DisplaySchedule() {
   const queryClient = useQueryClient();
   const student = queryClient.getQueryData(["auth"]) as LoggedInStudent
   
-  const { data, error } = useQuery(["Schedules"], () => getSchedules(student.student_id));
+  const { data:schedules, dataError } = useQuery(["Schedules"], () => getSchedules(student.student_id));
+  const { data:courses, coursesError} = useQuery(["Courses"], () => getTimings("ac7ncw-1"));
   let first_schedule: Schedule;
-  if (data) {
-    first_schedule = data[0] as Schedule
-    const { timings, error } = useQuery({
-      queryKey: ["Timings"], 
-      queryFn: () => getTimings(first_schedule.schedule_id), 
-      enabled: !!first_schedule}
-      );
-    if (timings){
-      console.log(timings)
-    }
+
+  if (courses) {
+    // first_schedule = data[0] as Schedule
+    // console.log(first_schedule)
   }
   
+  
   return (
-    data && (
+    courses && (
     <>
       <div className="p-3 text-center bg-light">
         <h1 className="mb-3">{student.first_name}'s Schedule</h1>
-        <h3>{data[0].name} {data[0].schedule_id}</h3>
+        <h3>{courses[0].course_id}</h3>
         
                 <FullCalendar
           plugins={[interactionPlugin, timeGridPlugin]}
           initialView='timeGridWeek'
           nowIndicator={true}
           editable={true}
-          initialEvents={[
-            { title: 'nice event', start: new Date() }
-          ]}
+          events = { courses.map(
+            (course) => 
+            {
+              
+              return {
+                title: course.course_id, 
+                start: new Date(), 
+                groupId: course.course_id, 
+                daysOfWeek: daysToNums(course.meeting_dates),
+                startTime: course.start_time,
+                endTime: course.end_time}
+            }
+          )
+          }
         />
       </div>
       {/* <div className="input-group">
@@ -60,4 +67,30 @@ export default function DisplaySchedule() {
       </div> */}
     </>)
   );
+}
+
+function daysToNums(days: String):String[]{
+  let numArray:String[] = []
+  for (let i = 0; i <= days.length-2; i+= 2){
+    const day = days.slice(i, i+2);
+    if(day === 'Mo'){
+      numArray.push('1')
+    }
+    else if (day === 'Tu'){
+      numArray.push('2')
+    }
+    else if (day === 'We'){
+      numArray.push('3')
+    }
+    else if (day === 'Th'){
+      numArray.push('4')
+    }
+    else if (day === 'Fr'){
+      numArray.push('5')
+    }
+
+  }
+  
+  return numArray
+  
 }

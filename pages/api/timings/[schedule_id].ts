@@ -16,8 +16,9 @@ export default async function handler(
       `SELECT course_id, section_id, start_time, end_time, meeting_dates, location, availability 
       FROM (SELECT * FROM section_schedule WHERE schedule_id = ?) AS T1 NATURAL JOIN Section;`,
       [resultId.data],
-      "Failed to fetch schedules"
+      "Failed to fetch courses"
     );
+    console.log("data found: ", data)
     return res.status(200).send(data ?? []);
   } catch (err) {}
   return res.status(400).json({ success: false });
