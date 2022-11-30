@@ -26,8 +26,103 @@ export interface StudentLogin {
 	password: string;
 }
 
+export interface StudentFollow {
+	student_id_1: string;
+	student_id_2: string;
+}
+
+export interface FindFriend {
+	student_id: string;
+}
+
+// export interface SearchFriendResponse {
+//   student: string;
+// }
+
+export type SearchFriendResponse =
+	| {
+			student: string;
+	  }
+	| { success: boolean };
+
+export interface followResponse {
+	success: boolean;
+	student_id: string;
+}
+
+export interface FollowFriend {
+	student_id_1: string;
+	student_id_2: string;
+}
+
+export async function follow({
+	student_id_1,
+	student_id_2,
+}: FollowFriend): Promise<followResponse> {
+	const { data } = await axios.post("/api/follow", {
+		student_id_1,
+		student_id_2,
+	});
+	return data as followResponse;
+}
+
+export interface UnfollowFriend {
+	student_id_1: string;
+	student_id_2: string;
+}
+
+export interface unfollowResponse {
+	success: boolean;
+	student_id: string;
+}
+
+export async function unfollow({
+	student_id_1,
+	student_id_2,
+}: UnfollowFriend): Promise<unfollowResponse> {
+	const { data } = await axios.post("/api/unfollow", {
+		student_id_1,
+		student_id_2,
+	});
+	return data as unfollowResponse;
+}
+
+export async function searchFriend({
+	student_id,
+}: FindFriend): Promise<SearchFriendResponse> {
+	try {
+		const { data } = await axios.post("/api/searchFriend", {
+			student_id,
+		});
+		console.log("searchFriend working", data);
+		return data as SearchFriendResponse;
+	} catch (err) {
+		console.log(err);
+		return { success: false };
+	}
+}
+
 export interface PostResponse {
 	success: boolean;
+}
+
+export interface Schedule {
+	schedule_id: string;
+	student_id: string;
+	name: string;
+	sched_term: string;
+	privacy: string;
+	num_likes: number;
+}
+
+export interface Timings {
+	course_id: string;
+	section_id: string;
+	start_time: string;
+	end_time: string;
+	meeting_dates: string;
+	location: string;
+	availability: string;
 }
 
 export async function postStudent({
@@ -49,8 +144,18 @@ export async function postStudent({
 	return data as PostResponse;
 }
 
+export async function getSchedules(student_id: string): Promise<Schedule[]> {
+	const { data } = await axios.get("/api/schedules/" + student_id);
+	return data as Schedule[];
+}
+
+export async function getTimings(student_id: string): Promise<Timings[]> {
+	const { data: schedule } = await axios.get("/api/schedules/" + student_id);
+	const { data } = await axios.get("/api/timings/" + schedule[0].schedule_id);
+	return data as Timings[];
+}
+
 export async function getFriends(student_id: string): Promise<Student[]> {
-	console.log("Hi");
 	let sid = student_id;
 	console.log(sid);
 	const { data } = await axios.get("/api/friends/" + sid);
@@ -92,4 +197,24 @@ export async function searchCourses(
 		console.error(error);
 	}
 	return [];
+}
+
+export function daysToNums(days: String): String[] {
+	let numArray: String[] = [];
+	for (let i = 0; i <= days.length - 2; i += 2) {
+		const day = days.slice(i, i + 2);
+		if (day === "Mo") {
+			numArray.push("1");
+		} else if (day === "Tu") {
+			numArray.push("2");
+		} else if (day === "We") {
+			numArray.push("3");
+		} else if (day === "Th") {
+			numArray.push("4");
+		} else if (day === "Fr") {
+			numArray.push("5");
+		}
+	}
+
+	return numArray;
 }

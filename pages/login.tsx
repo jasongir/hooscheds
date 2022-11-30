@@ -27,7 +27,8 @@ export default function LogIn() {
 		onError: (err) => console.log(err),
 	});
 
-	const mode = "LOGIN";
+	const mode1 = "LOGIN";
+	const mode2 = "SIGNUP";
 
 	const onSubmitHandler = async (e: React.SyntheticEvent) => {
 		e.preventDefault();
@@ -39,7 +40,7 @@ export default function LogIn() {
 		} else if (!password) {
 			setErrorMsg("please enter your password");
 			// alert("please enter your password");
-		} else if (mode === "LOGIN" && student_id && password) {
+		} else if (mode1 === "LOGIN" && student_id && password) {
 			await loginMutation.mutateAsync({ student_id, password });
 			console.log(queryClient.getQueryData(["auth"]));
 			router.push("/");
@@ -49,31 +50,42 @@ export default function LogIn() {
 	return (
 		<form onSubmit={onSubmitHandler}>
 			{errorMsg && <div>{errorMsg}</div>}
-			<HtmlInput
-				name="student_id"
-				label="Username:"
-				type="text"
-				value={formState.student_id}
-				onChange={(e: React.FormEvent) =>
-					setFormState({
-						...formState,
-						student_id: (e.target as HTMLInputElement).value,
-					})
-				}
-			/>
-			<HtmlInput
-				name="password"
-				label="Password:"
-				type="password"
-				value={formState.password}
-				onChange={(e: React.FormEvent) =>
-					setFormState({
-						...formState,
-						password: (e.target as HTMLInputElement).value,
-					})
-				}
-			/>
-			<button>LOGIN</button>
+			<div className="app-container">
+				<div className="col-md-6 offset-md-3 mt-5">
+					<div className="card">
+						<h4 className="card-header">Log In</h4>
+						<div className="card-body">
+							<HtmlInput
+								name="student_id"
+								label="Username:"
+								type="text"
+								value={formState.student_id}
+								onChange={(e: React.FormEvent) =>
+									setFormState({
+										...formState,
+										student_id: (e.target as HTMLInputElement).value,
+									})
+								}
+							/>
+							<HtmlInput
+								name="password"
+								label="Password:"
+								type="password"
+								value={formState.password}
+								onChange={(e: React.FormEvent) =>
+									setFormState({
+										...formState,
+										password: (e.target as HTMLInputElement).value,
+									})
+								}
+							/>
+							<button className="btn btn-primary">LOGIN</button>
+							<p>Haven't Registered Yet? </p>
+							<button className="btn btn-primary">SIGNUP</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</form>
 	);
 }

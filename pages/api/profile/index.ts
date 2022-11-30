@@ -13,9 +13,8 @@ export default async function handler(
 
   try {
     const data = await executeQuery(
-      `SELECT student_id_2             
-                FROM follows              
-                WHERE student_id_1 = ?;`,
+      `SELECT student_id_1             
+                 FROM follows;`,
       [resultId.data],
       "Failed to fetch following"
     );

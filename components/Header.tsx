@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Container, Nav, Navbar, Row, Spinner } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { use } from "react";
+import { LoggedInStudent } from "utils/utils";
 
 const NavItem = ({ href, text }: { href: string; text: string }) => (
 	<Nav.Link as="div">
