@@ -18,3 +18,11 @@ module.exports = withTM({
   // your custom config goes here
   nextConfig
 });
+
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   reactStrictMode: true,
+//   swcMinify: true,
+// }
+
+// module.exports = nextConfig
