@@ -13,6 +13,7 @@ export interface Section {
 	end_time: string;
 	meeting_dates: string;
 	availability: string;
+	added: String[];
 }
 
 export interface CourseSection {
@@ -26,4 +27,5 @@ export interface CourseSection {
 	end_time: string;
 	meeting_dates: string;
 	availability: string;
+	added: String[];
 }
