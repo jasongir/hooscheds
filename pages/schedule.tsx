@@ -6,6 +6,8 @@ import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { LoggedInStudent, getSchedules, getTimings, daysToNums } from "utils/utils";
 import { useQuery } from "@tanstack/react-query";
+import { Html } from "next/document";
+import JSXStyle from "styled-jsx/style";
 
 /* TODO: 
           2. Find all sections included in that schedule from section_schedule
@@ -29,6 +31,13 @@ export default function DisplaySchedule() {
           initialView='timeGridWeek'
           nowIndicator={true}
           editable={true}
+          eventDidMount={(eventInfo)=>{
+
+            const jsxEl = `<button onclick="alert('hey')">X</button>`
+            const s = document.createRange().createContextualFragment(jsxEl)
+            eventInfo.el.querySelector('.fc-event-title-container')?.append(s);
+            console.log(eventInfo.el)
+        }}
           events = { courses.map(
             (course) => 
             {
