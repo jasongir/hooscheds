@@ -127,7 +127,6 @@ export interface Timings {
 	added: String[];
 }
 
-
 export async function postStudent({
 	student_id,
 	password,
@@ -159,11 +158,19 @@ export async function getTimings(student_id: string): Promise<Timings[]> {
 	return data as Timings[];
 }
 
-export async function addToSchedule(student_id:String, course_id:String, section_id:String): Promise<PostResponse> {
+export async function addToSchedule(
+	student_id: String,
+	course_id: String,
+	section_id: String
+): Promise<PostResponse> {
 	const { data: schedule } = await axios.get("/api/schedules/" + student_id);
 	const first_schedule_id = schedule[0].schedule_id;
-	console.log(first_schedule_id, course_id, section_id)
-	const { data } = await axios.post("/api/section-schedule", {first_schedule_id, course_id, section_id});
+	console.log(first_schedule_id, course_id, section_id);
+	const { data } = await axios.post("/api/section-schedule", {
+		first_schedule_id,
+		course_id,
+		section_id,
+	});
 	return data as PostResponse;
 }
 
@@ -212,22 +219,21 @@ export async function searchCourses(
 	return [];
 }
 
-export function daysToNums(days: String): String[] {
-	let numArray: String[] = [];
-	for (let i = 0; i <= days.length - 2; i += 2) {
-		const day = days.slice(i, i + 2);
-		if (day === "Mo") {
-			numArray.push("1");
-		} else if (day === "Tu") {
-			numArray.push("2");
-		} else if (day === "We") {
-			numArray.push("3");
-		} else if (day === "Th") {
-			numArray.push("4");
-		} else if (day === "Fr") {
-			numArray.push("5");
-		}
-	}
+export interface DeleteRequest {
+	schedule_id: string;
+	course_id: string;
+	section_id: string;
+}
 
-	return numArray;
+export async function deleteFromSchedule(deleteRequestData: DeleteRequest) {
+	try {
+		// "/api/section-schedule"
+		const { data } = await axios.delete("/api/section-schedule", {
+			data: deleteRequestData,
+		});
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
+	return [];
 }
