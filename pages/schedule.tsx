@@ -80,7 +80,7 @@ const DisplaySchedule = () => {
 
 	const onClickHandler = async () => {
 		// const { student_id_1, student_id_2 } = formState;
-		if (schedulesAreLoading || !schedules || schedules.length === 0) return;
+		if (!schedules || schedules.length === 0) return;
 		const data = likeMutation.mutate({
 			student_id: student.student_id,
 			schedule_id: schedules[0].schedule_id,
