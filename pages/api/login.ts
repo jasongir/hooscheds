@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { executeQuery } from "../../backend-utils/db";
 import jwt from "jsonwebtoken";
-import { z } from "zod";
+import { number, z } from "zod";
 
 
 export default async function handler(
@@ -17,20 +17,21 @@ export default async function handler(
       student_id: z.string().max(100),
       password: z.string().max(100),
     });
-    const ResponseStudent = z.object({
-      student_id: z.string().max(100),
-      first_name: z.string().max(100),
-      last_name: z.string().max(100),
-      year: z.number().int().gte(1).lte(5),
-      primary_major: z.string().max(100),
-    });
+    interface ResponseStudent {
+      student_id: String;
+      first_name: String;
+      last_name: String;
+      year: number;
+      num_friends: number;
+      primary_major: number;
+    };
 
     const result = RequestStudent.safeParse(reqData);
     if (!result.success) {
       return res.status(400).json({ success: false });
     } else {
       try {
-        const data = await executeQuery(
+        const data:ResponseStudent[] = await executeQuery(
           `SELECT student_id, first_name, last_name, year, num_friends, primary_major FROM 
             Student WHERE student_id=? AND password=?`,
           [
@@ -41,8 +42,9 @@ export default async function handler(
             result.data.password,
           ],
           "Failed to find user"
-        );
-        console.log(data);
+        ) as ResponseStudent[];
+  
+        
         // create a JWT token valid for 1 hour here
         const token = jwt.sign(
           {

@@ -16,7 +16,6 @@ import {
 } from "utils/utils";
 import { daysToNums } from "utils/misc";
 import { useQuery } from "@tanstack/react-query";
-import { Html } from "next/document";
 import JSXStyle from "styled-jsx/style";
 import { z } from "zod";
 // import Heart = require("react-heart");
@@ -96,7 +95,7 @@ const DisplaySchedule = () => {
 		schedules && (
 			<>
 				<div className="p-3 text-center bg-light">
-					<h1 className="mb-3">{scheduleOwner}'s Schedule</h1>
+					<h1 className="mb-3">{scheduleOwner}&apos;s Schedule</h1>
 					<h3>{schedules[0].name}</h3>
 					<FullCalendar
 						plugins={[interactionPlugin, timeGridPlugin]}

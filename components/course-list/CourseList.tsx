@@ -26,7 +26,7 @@ const Course = ({ courseSections }: CourseProps) => {
 									<td className="section-table-heading-data"></td>
 								</tr>
 								{sections.map((section) => {
-									return <Section section={section} />;
+									return <Section key={section.section_id} section={section} />;
 								})}
 							</>
 						);

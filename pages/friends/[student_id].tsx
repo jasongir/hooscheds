@@ -61,7 +61,7 @@ export default function Friends() {
   return (
     <>
       <div className="p-3 text-center bg-light">
-        <h1 className="mb-3">{sid}'s Friends</h1>
+        <h1 className="mb-3">{sid}&apos;s Friends</h1>
       </div>
 
       <form onSubmit={onSubmitHandler}>

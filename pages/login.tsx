@@ -80,7 +80,7 @@ export default function LogIn() {
 							<button className="btn btn-primary" type="submit">
 								LOGIN
 							</button>
-							<p>Haven't Registered Yet? </p>
+							<p>Haven&apos;t Registered Yet? </p>
 							<Link className="btn btn-primary" href="/signup">
 								SIGNUP
 							</Link>
