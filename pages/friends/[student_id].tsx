@@ -14,10 +14,8 @@ import HtmlInput from "../../components/HtmlInput";
 export default function Friends() {
   const router = useRouter();
   const { student_id: sid } = router.query;
-  const sidRes = z.string().safeParse(sid);
-  if (!sidRes.success) {return <p>ERROR: incorrectly formatted ComputingID</p>;}
 
-  const { data, error } = useQuery(["Friends"], () => getFriends(sidRes.data));
+  const { data, error } = useQuery(["Friends"], () => getFriends(sid as string));
 
   const queryClient = useQueryClient();
   const student = queryClient.getQueryData(["auth"]) as LoggedInStudent;

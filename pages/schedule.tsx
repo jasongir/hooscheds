@@ -92,11 +92,12 @@ export default function DisplaySchedule(){
 
 	return (
 		courses &&
-		schedules && (
+		schedules &&
+    schedules[0] && (
 			<>
 				<div className="p-3 text-center bg-light">
 					<h1 className="mb-3">{scheduleOwner}&apos;s Schedule</h1>
-					<h3>{schedules[0].name}</h3>
+					{schedules[0] && (<h3>{schedules[0].name}</h3>)}
 					<FullCalendar
 						plugins={[interactionPlugin, timeGridPlugin]}
 						initialView="timeGridWeek"
