@@ -192,6 +192,8 @@ export function daysToNums(days: String):String[]{
   return numArray
 }
 
+
+//COMMENT
 export interface Comment{
   comment_id : number;
   student_id : string;
