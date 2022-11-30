@@ -35,9 +35,6 @@ export interface FindFriend {
   student_id: string;
 }
 
-// export interface SearchFriendResponse {
-//   student: string;
-// }
 
 export type SearchFriendResponse = {
   student: string;
@@ -191,9 +188,41 @@ export function daysToNums(days: String):String[]{
     else if (day === 'Fr'){
       numArray.push('5')
     }
-
   }
-  
   return numArray
-  
+}
+
+export interface Comment{
+  comment_id : number;
+  student_id : string;
+  schedule_id : string;
+  comment_text: string;
+}
+
+export interface commentResponse {
+  success: boolean;
+  comment_text: string;
+}
+
+export async function getComment(comment_id: string): Promise<Comment[]> {
+  let cid = comment_id;
+  console.log(cid);
+  const { data } = await axios.get("/api/schedules/comment");
+  return data as Comment[];
+}
+
+export async function postComment({
+  comment_id,
+  student_id,
+  schedule_id,
+  comment_text,
+}: Comment): Promise<commentResponse> {
+  let cid = comment_id;
+  const { data } = await axios.post("/api/schedules/" + cid, {
+  comment_id,
+  student_id,
+  schedule_id,
+  comment_text,
+  });
+  return data as commentResponse;
 }

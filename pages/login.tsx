@@ -34,10 +34,10 @@ export default function LogIn() {
     e.preventDefault();
     const { student_id, password } = formState;
 
-    if(mode2 === "SIGNUP"){
-      router.push("/signup");
-    }
-    if (!student_id) {
+    // if(mode2 === "SIGNUP"){
+    //   router.push("/signup");
+    // }
+   if (!student_id) {
       setErrorMsg("please enter your email");
       // alert("please enter your email");
     } else if (!password) {
