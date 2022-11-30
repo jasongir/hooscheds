@@ -1,6 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
 import { LoggedInStudent } from "../../utils/utils";
+import DisplaySchedule from "pages/schedule";
 import { useRouter } from "next/router";
 
 export default function Profile() {
@@ -33,7 +34,8 @@ export default function Profile() {
 							<h3>{typedData.primary_major} Major</h3>
 						</Col>
 						<Col as="section">
-							<h1>{typedData.first_name}'s Schedule</h1>
+							<h3>{typedData.first_name}'s Schedules</h3>
+							<DisplaySchedule/>
 						</Col>
 					</Row>
 				</Container>
