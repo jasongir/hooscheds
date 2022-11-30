@@ -27,7 +27,7 @@ const LogoutButton = () => {
 
 export default function Header() {
 	const queryClient = useQueryClient();
-	const data = queryClient.getQueryData(["auth"]);
+	const data = queryClient.getQueryData(["auth"]) as LoggedInStudent;
 
 	const loading = <Spinner animation="border" role="status" />;
 	const navbar = (
