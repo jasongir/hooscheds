@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { StudentLogin, postStudentLogIn } from "../utils/utils";
 import HtmlInput from "../components/HtmlInput";
+import Link from "next/link";
 
 export default function LogIn() {
 	const router = useRouter();
@@ -27,9 +28,6 @@ export default function LogIn() {
 		onError: (err) => console.log(err),
 	});
 
-	const mode1 = "LOGIN";
-	const mode2 = "SIGNUP";
-
 	const onSubmitHandler = async (e: React.SyntheticEvent) => {
 		e.preventDefault();
 		const { student_id, password } = formState;
@@ -40,7 +38,7 @@ export default function LogIn() {
 		} else if (!password) {
 			setErrorMsg("please enter your password");
 			// alert("please enter your password");
-		} else if (mode1 === "LOGIN" && student_id && password) {
+		} else if (student_id && password) {
 			await loginMutation.mutateAsync({ student_id, password });
 			console.log(queryClient.getQueryData(["auth"]));
 			router.push("/");
@@ -79,9 +77,13 @@ export default function LogIn() {
 									})
 								}
 							/>
-							<button className="btn btn-primary">LOGIN</button>
+							<button className="btn btn-primary" type="submit">
+								LOGIN
+							</button>
 							<p>Haven't Registered Yet? </p>
-							<button className="btn btn-primary">SIGNUP</button>
+							<Link className="btn btn-primary" href="/signup">
+								SIGNUP
+							</Link>
 						</div>
 					</div>
 				</div>
