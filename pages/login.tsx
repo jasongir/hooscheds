@@ -42,7 +42,7 @@ export default function LogIn() {
 		} else if (mode === "LOGIN" && student_id && password) {
 			await loginMutation.mutateAsync({ student_id, password });
 			console.log(queryClient.getQueryData(["auth"]));
-			router.push("/home");
+			router.push("/");
 		}
 	};
 

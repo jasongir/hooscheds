@@ -69,7 +69,7 @@ export default function SignUp() {
 				num_friends,
 				primary_major,
 			});
-			router.push("/home");
+			router.push("/");
 		}
 	};
 

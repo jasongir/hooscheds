@@ -7,22 +7,22 @@ import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
 export default function AuthCheck({ Component, pageProps }: AppProps) {
-	// ignore authentication
-	const client = useQueryClient();
-	client.setQueryData(["auth"], {
-		student_id: "jag8thv",
-		first_name: "Jason",
-		last_name: "Giroux",
-		year: "3",
-		num_friends: 2,
-		primary_major: "CS",
-	});
-	return (
-		<>
-			<Header />
-			<Component {...pageProps} />
-		</>
-	);
+	// // to ignore authentication:
+	// const client = useQueryClient();
+	// client.setQueryData(["auth"], {
+	// 	student_id: "jag8thv",
+	// 	first_name: "Jason",
+	// 	last_name: "Giroux",
+	// 	year: "3",
+	// 	num_friends: 2,
+	// 	primary_major: "CS",
+	// });
+	// return (
+	// 	<>
+	// 		<Header />
+	// 		<Component {...pageProps} />
+	// 	</>
+	// );
 
 	const router = useRouter();
 	const queryClient = useQueryClient();

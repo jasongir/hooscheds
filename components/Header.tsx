@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Container, Nav, Navbar, Row } from "react-bootstrap";
+import { Container, Nav, Navbar, Row, Spinner } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 
@@ -24,7 +24,11 @@ const LogoutButton = () => {
 };
 
 export default function Header() {
-	return (
+	const queryClient = useQueryClient();
+	const data = queryClient.getQueryData(["auth"]);
+
+	const loading = <Spinner animation="border" role="status" />;
+	const navbar = (
 		<Navbar expand="md">
 			<Container>
 				<Navbar.Brand>
@@ -34,12 +38,16 @@ export default function Header() {
 					<NavItem href="/profile" text="My Profile" />
 					<NavItem href="/schedule" text="My Schedule" />
 					<NavItem href="/courses" text="Courses" />
-					<NavItem href="/friends/jag8thv" text="My Friends" />
+					<NavItem
+						href={`/friends/${data.student_id}`}
+						text="My Friends"
+					/>
 					<LogoutButton />
 				</Nav>
 			</Container>
 		</Navbar>
 	);
+	return data ? navbar : loading;
 }
 
 // old code, did not use correct router

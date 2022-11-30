@@ -1,4 +1,5 @@
 import axios from "axios";
+import { CourseSection } from "./types";
 
 //signup
 export interface Student {
@@ -71,4 +72,24 @@ export async function postStudentLogIn({
 	});
 	console.log(data);
 	return data as LoginResponse;
+}
+
+export interface CourseSearchReq {
+	course_id: string;
+	course_name: string;
+	term: string;
+}
+
+export async function searchCourses(
+	searchRequestData: CourseSearchReq
+): Promise<CourseSection[]> {
+	try {
+		const { data } = await axios.get("/api/courses/search", {
+			params: searchRequestData,
+		});
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
+	return [];
 }
