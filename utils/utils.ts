@@ -1,4 +1,5 @@
 import axios from "axios";
+import { AbortedDeferredError } from "react-router-dom";
 import { CourseSection } from "./types";
 
 //signup
@@ -123,7 +124,9 @@ export interface Timings {
 	meeting_dates: string;
 	location: string;
 	availability: string;
+	added: String[];
 }
+
 
 export async function postStudent({
 	student_id,
@@ -152,7 +155,16 @@ export async function getSchedules(student_id: string): Promise<Schedule[]> {
 export async function getTimings(student_id: string): Promise<Timings[]> {
 	const { data: schedule } = await axios.get("/api/schedules/" + student_id);
 	const { data } = await axios.get("/api/timings/" + schedule[0].schedule_id);
+	data.added = [];
 	return data as Timings[];
+}
+
+export async function addToSchedule(student_id:String, course_id:String, section_id:String): Promise<PostResponse> {
+	const { data: schedule } = await axios.get("/api/schedules/" + student_id);
+	const first_schedule_id = schedule[0].schedule_id;
+	console.log(first_schedule_id, course_id, section_id)
+	const { data } = await axios.post("/api/section-schedule", {first_schedule_id, course_id, section_id});
+	return data as PostResponse;
 }
 
 export async function getFriends(student_id: string): Promise<Student[]> {
@@ -192,6 +204,7 @@ export async function searchCourses(
 		const { data } = await axios.get("/api/courses/search", {
 			params: searchRequestData,
 		});
+		data.added = [];
 		return data;
 	} catch (error) {
 		console.error(error);

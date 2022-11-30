@@ -43,20 +43,20 @@ export default function DisplaySchedule() {
             const jsxEl = `<button onclick="alert('hey')">X</button>`
             const s = document.createRange().createContextualFragment(jsxEl)
             eventInfo.el.querySelector('.fc-event-title-container')?.append(s);
-            console.log(eventInfo.el)
+            
         }}
           events = { courses.map(
             (course) => 
             {
-              
               return {
                 title: course.course_id, 
                 start: new Date(), 
                 groupId: course.course_id, 
                 daysOfWeek: daysToNums(course.meeting_dates),
                 startTime: course.start_time,
-                endTime: course.end_time}
+                endTime: course.end_time,
             }
+          }
           )
           }
         />
