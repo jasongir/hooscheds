@@ -35,9 +35,13 @@ export interface FindFriend {
   student_id: string;
 }
 
-export interface SearchFriendResponse {
+// export interface SearchFriendResponse {
+//   student: string;
+// }
+
+export type SearchFriendResponse = {
   student: string;
-}
+} | {success: boolean}
 
 export interface followResponse {
   success: boolean;
@@ -57,14 +61,38 @@ export async function follow({student_id_1, student_id_2}: FollowFriend): Promis
   return data as followResponse
 }
 
+export interface UnfollowFriend {
+  student_id_1: string;
+  student_id_2: string;
+}
+
+export interface unfollowResponse {
+  success: boolean;
+  student_id: string;
+}
+
+export async function unfollow({student_id_1, student_id_2}: UnfollowFriend): Promise<unfollowResponse> {
+  const { data } = await axios.post("/api/unfollow", {
+    student_id_1,
+    student_id_2,
+  });
+  return data as unfollowResponse
+}
+
 export async function searchFriend({
   student_id,
 }: FindFriend): Promise<SearchFriendResponse> {
-  const { data } = await axios.post("/api/searchFriend", {
-    student_id,
-  });
-  console.log("searchFriend working" , data);
-  return data as SearchFriendResponse;
+  try{
+    const { data } = await axios.post("/api/searchFriend", {
+      student_id,
+    });
+    console.log("searchFriend working" , data);
+    return data as SearchFriendResponse;
+  } catch(err){
+    console.log(err)
+    return {success: false}
+  }
+
 }
 
 export interface PostResponse {

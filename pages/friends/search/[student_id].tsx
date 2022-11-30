@@ -1,6 +1,6 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { useQueryClient } from "@tanstack/react-query";
-import { LoggedInStudent, follow, FollowFriend } from "../../utils/utils";
+import { LoggedInStudent, follow, getFriends } from "../../../utils/utils";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { z } from "zod";
@@ -11,28 +11,15 @@ export default function FollowAFriend() {
   const { student_id: sid } = router.query;
   const sidRes = z.string().safeParse(sid);
 
+  // const { data: searchResult, error:errorSearch } = useQuery(["User"], () => searchFriend({student_id:sid}));
+
   const queryClient = useQueryClient();
   const student = queryClient.getQueryData(["auth"]) as LoggedInStudent;
-
-  // const [formState, setFormState] = useState<FollowFriend>({
-  // 	student_id_1: "",
-  // 	student_id_2: "",
-  // });
 
   const student_id_1 = student.student_id;
   const student_id_2 = sid as string;
 
-  // setFormState({
-  //     ...formState,
-  //     student_id_1: student.student_id,
-  // })
-
-  // setFormState({
-  //     ...formState,
-  //     student_id_2: sid as string,
-  // })
-
-  const mode = "FOLLOW";
+  const [mode, setMode] = useState<"FOLLOW" | "FOLLOWING">("FOLLOW");
 
   const followMutation = useMutation(follow, {
     onSuccess: (data) => {
@@ -40,6 +27,22 @@ export default function FollowAFriend() {
     },
     onError: (err) => console.log(err),
   });
+
+  const { data, error } = useQuery(["Friends"], () => getFriends(student_id_1));
+
+  console.log("user's friend data:", data);
+
+  useEffect(() => {
+    for (let i = 0; i < data.length; i++) {
+      if (student_id_2 === data[i].student_id_2) {
+        setMode("FOLLOWING");
+      }
+    }
+  }, []);
+
+  //   if (student_id_2 in data.stu) {
+  //     setMode("FOLLOWING");
+  //   }
 
   const onSubmitHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -50,16 +53,14 @@ export default function FollowAFriend() {
       router.push(`/friends/${encodeURIComponent(student.student_id)}`);
     }
   };
+
   return (
     <>
-      <div className="card card-header">
-        <h3 className="position">{sid}</h3>
-        <form onSubmit={onSubmitHandler}>
-          <div className="center">
-              <button className="btn btn-primary">FOLLOW</button>
-            </div>
-        </form>
-      </div>
+      <h1> Search Result</h1>
+      <p>{sid}</p>
+      <form onSubmit={onSubmitHandler}>
+        <button>{mode}</button>
+      </form>
     </>
   );
 }

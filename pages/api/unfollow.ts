@@ -29,13 +29,13 @@ export default async function handler(
     } else {
       try {
         const data = await executeQuery(
-          `INSERT INTO 
-                    follows(student_id_1, student_id_2) 
-                    VALUES (?, ?)`,
+          `DELETE FROM follows 
+                    WHERE student_id_1 = ?
+                    AND student_id_2 = ?`,
           [result.data.student_id_1, result.data.student_id_2],
-          "Failed to insert into Student"
+          "Failed to unfollow"
         );
-        console.log(data, "found");
+        console.log(data, "unfollowed");
 
         return res.status(201).json({ success: true, student: data[0] });
       } catch (error) {
